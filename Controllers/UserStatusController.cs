@@ -1,8 +1,9 @@
 using LibraCore.Backend.DTOs.UserStatus;
+using LibraCore.Backend.Models;
 using LibraCore.Backend.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LibraCore.Backend.Models;
+namespace LibraCore.Backend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

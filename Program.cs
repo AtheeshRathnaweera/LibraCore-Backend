@@ -1,5 +1,6 @@
 using System.Text.Json;
 using LibraCore.Backend.Data;
+using LibraCore.Backend.Middlewares;
 using LibraCore.Backend.Services.Implementations;
 using LibraCore.Backend.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
