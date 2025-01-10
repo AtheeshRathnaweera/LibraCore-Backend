@@ -1,4 +1,4 @@
-using LibraCore.Backend.DTOs;
+using LibraCore.Backend.DTOs.Role;
 using LibraCore.Backend.Models;
 using LibraCore.Backend.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;

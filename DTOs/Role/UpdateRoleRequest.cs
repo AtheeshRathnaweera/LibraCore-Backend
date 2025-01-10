@@ -1,6 +1,6 @@
-namespace LibraCore.Backend.DTOs;
+namespace LibraCore.Backend.DTOs.Role;
 
-public class UpdateUserStatusRequest
+public class UpdateRoleRequest
 {
   public required int Id { get; set; }
   public required string Name { get; set; }

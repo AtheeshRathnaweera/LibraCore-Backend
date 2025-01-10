@@ -1,4 +1,4 @@
-namespace LibraCore.Backend.DTOs;
+namespace LibraCore.Backend.DTOs.UserStatus;
 
 public class CreateUserStatusRequest
 {
