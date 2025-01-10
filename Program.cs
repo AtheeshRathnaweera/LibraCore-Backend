@@ -1,3 +1,4 @@
+using System.Text.Json;
 using LibraCore.Backend.Data;
 using LibraCore.Backend.Services;
 using LibraCore.Backend.Services.Implementations;
@@ -16,6 +17,7 @@ RegisterServices(builder);
 
 // Build and configure the app
 var app = builder.Build();
+
 ConfigurePipeline(app);
 
 app.Run();
@@ -44,7 +46,22 @@ void ConfigureDatabase(WebApplicationBuilder builder)
 void RegisterServices(WebApplicationBuilder builder)
 {
   builder.Services.AddScoped<IRoleService, RoleService>();
-  builder.Services.AddControllers();
+
+  // Configure global JsonSerializerOptions in the DI container
+  var globalJsonOptions = new JsonSerializerOptions
+  {
+    PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower, // Snake_case conversion
+    WriteIndented = false
+  };
+  builder.Services.AddSingleton(globalJsonOptions);
+
+  builder.Services.AddControllers()
+  .AddJsonOptions(options =>
+  {
+    options.JsonSerializerOptions.PropertyNamingPolicy = globalJsonOptions.PropertyNamingPolicy;
+    options.JsonSerializerOptions.WriteIndented = globalJsonOptions.WriteIndented;
+  });
+
   builder.Services.AddEndpointsApiExplorer();
   builder.Services.AddSwaggerGen();
 }
