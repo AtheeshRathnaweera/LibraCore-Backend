@@ -1,5 +1,6 @@
 using System.Net;
 using System.Text.Json;
+using LibraCore.Backend.DTOs;
 
 public class ExceptionHandlingMiddleware
 {
@@ -41,16 +42,21 @@ public class ExceptionHandlingMiddleware
 
     context.Response.StatusCode = statusCode;
 
-    var response = new
+    var response = new ExceptionHandlerResponse
     {
       StatusCode = statusCode,
       Message = message,
       Timestamp = DateTime.UtcNow,
-      Debug = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Development"
-        ? new { ExceptionType = exception.GetType().Name, StackTrace = exception.StackTrace }
+      Debug = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development"
+        ? new ExceptionDebugInfo
+        {
+          ExceptionType = exception.GetType().Name,
+          StackTrace = exception.StackTrace ?? string.Empty
+        }
         : null
     };
 
-    return context.Response.WriteAsync(JsonSerializer.Serialize(response));
+    var options = context.RequestServices.GetRequiredService<JsonSerializerOptions>();
+    return context.Response.WriteAsync(JsonSerializer.Serialize(response, options));
   }
 }
