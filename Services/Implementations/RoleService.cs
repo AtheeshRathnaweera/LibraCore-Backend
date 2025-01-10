@@ -1,6 +1,7 @@
 using LibraCore.Backend.Data;
 using LibraCore.Backend.Entities;
 using LibraCore.Backend.Models;
+using LibraCore.Backend.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace LibraCore.Backend.Services.Implementations;
@@ -31,7 +32,8 @@ public class RoleService : IRoleService
     RoleEntity roleEntity = new()
     {
       Name = roleModel.Name ?? throw new ArgumentNullException(nameof(roleModel.Name)),
-      CreatedAt = roleModel.CreatedAt
+      CreatedAt = roleModel.CreatedAt,
+      UpdatedAt = roleModel.UpdatedAt
     };
 
     _dbContext.Role.Add(roleEntity);

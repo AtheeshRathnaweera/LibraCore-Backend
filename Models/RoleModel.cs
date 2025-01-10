@@ -18,6 +18,7 @@ public class RoleModel
   public RoleModel(string name)
   {
     Name = name;
-    CreatedAt = DateTime.UtcNow; // Set CreatedAt to current UTC time
+    CreatedAt = DateTime.UtcNow;
+    UpdatedAt = CreatedAt;
   }
 }
