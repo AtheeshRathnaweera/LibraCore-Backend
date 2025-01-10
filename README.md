@@ -35,7 +35,7 @@ Once the environment variables are set, you can run the application.
 
 ### 💻 .NET
 
-#### Run with a Launch Profile 🏃‍♂️
+#### Run with a Launch Profile
 
 To run the application with the specified launch profile (e.g., HTTPS):
 
@@ -43,7 +43,7 @@ To run the application with the specified launch profile (e.g., HTTPS):
 dotnet run --launch-profile https
 ```
 
-#### Run with Hot Reload 🔥
+#### Run with Hot Reload
 
 To start the application with hot reload (automatically reload changes without restarting the app):
 
