@@ -1,0 +1,6 @@
+@LibraCore.Backend_HostAddress = http://localhost:5114
+
+GET {{LibraCore.Backend_HostAddress}}/api/
+Accept: application/json
+
+###

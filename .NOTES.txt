@@ -1,0 +1,17 @@
+
+# COMMANDS
+
+# Run the application
+`dotnet run --launch-profile https`
+
+# Run with hot reload
+`dotnet watch`
+
+# List installed .net SDKs in the machine
+`dotnet --list-sdks`
+
+# View in use packages in the project
+`dotnet list package`
+
+# Generate the default gitignore file
+`dotnet new gitignore`
