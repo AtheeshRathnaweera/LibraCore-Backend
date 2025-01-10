@@ -1,7 +1,7 @@
 using System.Text.Json;
 using LibraCore.Backend.Data;
-using LibraCore.Backend.Services;
 using LibraCore.Backend.Services.Implementations;
+using LibraCore.Backend.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -46,6 +46,7 @@ void ConfigureDatabase(WebApplicationBuilder builder)
 void RegisterServices(WebApplicationBuilder builder)
 {
   builder.Services.AddScoped<IRoleService, RoleService>();
+  builder.Services.AddScoped<IUserStatusService, UserStatusService>();
 
   // Configure global JsonSerializerOptions in the DI container
   var globalJsonOptions = new JsonSerializerOptions
