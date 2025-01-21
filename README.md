@@ -77,4 +77,18 @@ To create a .gitignore file with default settings suitable for .NET projects:
 dotnet new gitignore
 ```
 
+## ✅ Key Concepts Covered
+- ☑︎ ORM for MySQL
+- ☑︎ Basic CRUD operations
+- ☑︎ Centralized exception handling
+- ☑︎ Sensitive credentials management using environment variables
+- ☐ Authentication and Authorization
+- ☐ Input Validation
+- ☐ Pagination and Filtering
+- ☐ Logging and Monitoring
+- ☐ Unit Testing
+- ☐ API Documentation
+- ☐ Database Migration
+- ☐ Versioning
+
 Happy coding! 😊
