@@ -10,15 +10,5 @@ public class MainDBContext : DbContext
   }
 
   public required DbSet<RoleEntity> Role { get; set; }
-
-  // protected override void OnModelCreating(ModelBuilder modelBuilder)
-  // {
-  //   base.OnModelCreating(modelBuilder);
-
-  //   modelBuilder.Entity<RoleEntity>(entity =>
-  //   {
-  //     entity.Property(r => r.CreatedAt).HasColumnName("created_at");
-  //     entity.Property(r => r.UpdatedAt).HasColumnName("updated_at");
-  //   });
-  // }
+  public required DbSet<UserStatusEntity> UserStatus { get; set; }
 }
