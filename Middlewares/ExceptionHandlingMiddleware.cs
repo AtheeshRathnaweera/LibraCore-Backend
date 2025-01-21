@@ -2,6 +2,8 @@ using System.Net;
 using System.Text.Json;
 using LibraCore.Backend.DTOs;
 
+namespace LibraCore.Backend.Middlewares;
+
 public class ExceptionHandlingMiddleware
 {
   private readonly RequestDelegate _next;
