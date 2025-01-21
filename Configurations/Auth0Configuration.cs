@@ -27,10 +27,15 @@ public static class Auth0Configuration
 
     var policies = new Dictionary<string, string>
     {
-        { "roles:read", "roles:read" },
-        { "roles:write", "roles:write" },
+        { "role:read", "role:read" },
+        { "role:write", "role:write" },
+        { "role:delete", "role:delete" },
         { "user_status:read", "user_status:read" },
-        { "user_status:write", "user_status:write" }
+        { "user_status:write", "user_status:write" },
+        { "user_status:delete", "user_status:delete" },
+        { "user:read", "user:read" },
+        { "user:write", "user:write" },
+        { "user:delete", "user:delete" },
     };
 
     var authorizationBuilder = services.AddAuthorizationBuilder();
