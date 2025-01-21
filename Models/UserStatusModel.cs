@@ -21,4 +21,10 @@ public class UserStatusModel
     CreatedAt = DateTime.UtcNow;
     UpdatedAt = CreatedAt;
   }
+
+  public UserStatusModel(int id, string name)
+  {
+    Id = id;
+    Name = name;
+  }
 }
