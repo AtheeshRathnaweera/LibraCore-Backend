@@ -1,6 +1,6 @@
 using LibraCore.Backend.DTOs;
 using LibraCore.Backend.Models;
-using LibraCore.Backend.Services;
+using LibraCore.Backend.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraCore.Backend.Controllers;
@@ -18,6 +18,24 @@ public class RoleController : ControllerBase
     _roleService = roleService ?? throw new ArgumentNullException(nameof(roleService));
   }
 
+  [HttpGet("{id}")]
+  public async Task<ActionResult<RoleModel>> GetById(int id)
+  {
+    if (id <= 0)
+    {
+      _logger.LogWarning("Invalid ID: {Id}", id);
+      return BadRequest("Invalid ID provided.");
+    }
+
+    var role = await _roleService.GetAsync(id);
+    if (role == null)
+    {
+      _logger.LogInformation("No role found.");
+      return NotFound("Role not found.");
+    }
+    return Ok(role);
+  }
+
   [HttpGet]
   public async Task<ActionResult<IEnumerable<RoleModel>>> GetAll()
   {
@@ -32,26 +50,6 @@ public class RoleController : ControllerBase
     return Ok(roles);
   }
 
-  [HttpGet("{id}")]
-  public async Task<ActionResult<RoleModel>> GetById(int id)
-  {
-    if (id <= 0)
-    {
-      _logger.LogWarning("Invalid ID: {Id}", id);
-      return BadRequest("Invalid ID provided.");
-    }
-
-    {
-      var role = await _roleService.GetAsync(id);
-      if (role == null)
-      {
-        _logger.LogInformation("No role found.");
-        return NotFound("Role not found.");
-      }
-      return Ok(role);
-    }
-  }
-
   [HttpPost]
   public async Task<ActionResult<RoleModel>> Create(CreateRoleRequest createRoleRequest)
   {
@@ -61,17 +59,15 @@ public class RoleController : ControllerBase
       return BadRequest("Role name is required.");
     }
 
-    {
-      var newRole = new RoleModel(name: createRoleRequest.Name);
-      var createdRole = await _roleService.CreateAsync(newRole);
+    var newRole = new RoleModel(name: createRoleRequest.Name);
+    var createdRole = await _roleService.CreateAsync(newRole);
 
-      _logger.LogInformation("Role created successfully with Name: {Name}", createdRole.Name);
+    _logger.LogInformation("Role created successfully with Name: {Name}", createdRole.Name);
 
-      // 201 Created status. This response indicates that the resource was successfully created. 
-      // It includes the URI of the newly created resource (using the GetById action) in the Location header 
-      // along with the created role object in the response body.
-      return CreatedAtAction(nameof(GetById), new { id = createdRole.Id }, createdRole);
-    }
+    // 201 Created status. This response indicates that the resource was successfully created. 
+    // It includes the URI of the newly created resource (using the GetById action) in the Location header 
+    // along with the created role object in the response body.
+    return CreatedAtAction(nameof(GetById), new { id = createdRole.Id }, createdRole);
   }
 
   [HttpPut("{id}")]
