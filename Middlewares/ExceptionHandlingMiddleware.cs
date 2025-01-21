@@ -46,7 +46,6 @@ public class ExceptionHandlingMiddleware
 
     var response = new ExceptionHandlerResponse
     {
-      StatusCode = statusCode,
       Message = message,
       Timestamp = DateTime.UtcNow,
       Debug = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development"
