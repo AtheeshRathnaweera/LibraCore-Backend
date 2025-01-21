@@ -38,7 +38,7 @@ public class RoleController : ControllerBase
     if (role == null)
     {
       _logger.LogInformation("No role found.");
-      return NotFound("Role not found.");
+      return NotFound(new MessageResponse("Role not found."));
     }
     return Ok(role);
   }
@@ -51,7 +51,7 @@ public class RoleController : ControllerBase
     if (!roles.Any())
     {
       _logger.LogInformation("No roles found.");
-      return NotFound("No roles available.");
+      return NotFound(new MessageResponse("No roles available."));
     }
 
     return Ok(roles);
@@ -102,7 +102,7 @@ public class RoleController : ControllerBase
     if (updatedRole == null)
     {
       _logger.LogWarning("Role not found for update: {RoleId}", id);
-      return NotFound($"Role with ID {id} not found.");
+      return NotFound(new MessageResponse($"Role with ID {id} not found."));
     }
 
     return Ok(updatedRole);
@@ -116,7 +116,7 @@ public class RoleController : ControllerBase
     if (!result)
     {
       _logger.LogWarning("Role with id {Id} not found.", id);
-      return NotFound($"Role with id {id} not found.");
+      return NotFound(new MessageResponse($"Role with id {id} not found."));
     }
 
     return NoContent(); // 204 No Content (successfully deleted)
