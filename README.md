@@ -85,7 +85,8 @@ dotnet new gitignore
   - <span style="font-size:13px;">Using the `Middleware` to streamline error handling across the application.</span>
 - ☑︎ Sensitive credentials management
   - <span style="font-size:13px;">Storing credentials securely with the `Environment Variables`.</span>
-- ☐ Authentication and Authorization
+- ☑︎ Authentication and Authorization
+  - <span style="font-size:13px;">Authentication is implemented using `Auth0` as the `OAuth2` client. `Scope-based authorization` is enforced via endpoint-specific `decorators`. For more details, refer to the documentation: <a href="https://auth0.com/docs/quickstart/backend/aspnet-core-webapi/interactive?download=true">Auth0 Quickstart for ASP.NET Core Web API</a>.</span>
 - ☑︎ Input Validation
   - <span style="font-size:13px;">Validating request bodies with the `FluentValidation` library.</span>
 - ☐ Pagination and Filtering
