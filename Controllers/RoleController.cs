@@ -1,3 +1,6 @@
+using FluentValidation;
+using FluentValidation.Results;
+using LibraCore.Backend.DTOs;
 using LibraCore.Backend.DTOs.Role;
 using LibraCore.Backend.Models;
 using LibraCore.Backend.Services.Interfaces;
@@ -10,11 +13,15 @@ namespace LibraCore.Backend.Controllers;
 public class RoleController : ControllerBase
 {
   private readonly ILogger<RoleController> _logger;
+  private readonly IValidator<CreateRoleRequest> _createRoleRequestValidator;
+  private readonly IValidator<UpdateRoleRequest> _updateRoleRequestValidator;
   private readonly IRoleService _roleService;
 
-  public RoleController(ILogger<RoleController> logger, IRoleService roleService)
+  public RoleController(ILogger<RoleController> logger, IValidator<CreateRoleRequest> createRoleRequestValidator, IValidator<UpdateRoleRequest> updateRoleRequestValidator, IRoleService roleService)
   {
     _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    _createRoleRequestValidator = createRoleRequestValidator ?? throw new ArgumentNullException(nameof(createRoleRequestValidator));
+    _updateRoleRequestValidator = updateRoleRequestValidator ?? throw new ArgumentNullException(nameof(updateRoleRequestValidator));
     _roleService = roleService ?? throw new ArgumentNullException(nameof(roleService));
   }
 
@@ -53,13 +60,15 @@ public class RoleController : ControllerBase
   [HttpPost]
   public async Task<ActionResult<RoleModel>> Create(CreateRoleRequest createRoleRequest)
   {
-    if (string.IsNullOrWhiteSpace(createRoleRequest.Name))
+    ValidationResult validationResult = await _createRoleRequestValidator.ValidateAsync(createRoleRequest);
+
+    if (!validationResult.IsValid)
     {
-      _logger.LogWarning("Invalid create request: Name is null or empty.");
-      return BadRequest("Role name is required.");
+      _logger.LogWarning("Invalid create request: {errors}", validationResult.Errors);
+      return BadRequest(new RequestValidationFailureResponse(validationResult.ToDictionary()));
     }
 
-    var newRole = new RoleModel(name: createRoleRequest.Name);
+    var newRole = new RoleModel(name: createRoleRequest.Name!);
     var createdRole = await _roleService.CreateAsync(newRole);
 
     _logger.LogInformation("Role created successfully with Name: {Name}", createdRole.Name);
@@ -73,16 +82,18 @@ public class RoleController : ControllerBase
   [HttpPut("{id}")]
   public async Task<ActionResult<RoleModel>> Update(int id, UpdateRoleRequest updateRoleRequest)
   {
-    if (updateRoleRequest == null)
+    ValidationResult validationResult = await _updateRoleRequestValidator.ValidateAsync(updateRoleRequest);
+
+    if (!validationResult.IsValid)
     {
-      _logger.LogWarning("Invalid update request: {RoleId}", id);
-      return BadRequest("Invalid update request.");
+      _logger.LogWarning("Invalid update request: {errors}", validationResult.Errors);
+      return BadRequest(new RequestValidationFailureResponse(validationResult.ToDictionary()));
     }
 
-    if (string.IsNullOrWhiteSpace(updateRoleRequest.Name))
+    if (id != updateRoleRequest.Id)
     {
-      _logger.LogWarning("Role name is missing for update: {RoleId}", id);
-      return BadRequest("Role name cannot be empty.");
+      _logger.LogWarning("'Id' in the request body does not match the 'Id' in the path: {BodyId} vs {PathId}", updateRoleRequest.Id, id);
+      return BadRequest(new RequestValidationFailureResponse("Id", "The 'Id' in the request body must match the 'Id' in the path."));
     }
 
     var roleWithUpdates = new RoleModel { Id = id, Name = updateRoleRequest.Name };
