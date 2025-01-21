@@ -1,4 +1,4 @@
-using LibraCore.Backend.DTOs;
+using LibraCore.Backend.DTOs.UserStatus;
 using LibraCore.Backend.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
