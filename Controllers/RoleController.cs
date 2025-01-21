@@ -28,7 +28,7 @@ public class RoleController : ControllerBase
   }
 
   [HttpGet("{id}")]
-  [Authorize("roles:read")]
+  [Authorize("role:read")]
   public async Task<ActionResult<RoleModel>> GetById(int id)
   {
     if (id <= 0)
@@ -47,7 +47,7 @@ public class RoleController : ControllerBase
   }
 
   [HttpGet]
-  [Authorize("roles:read")]
+  [Authorize("role:read")]
   public async Task<ActionResult<IEnumerable<RoleModel>>> GetAll()
   {
     var roles = await _roleService.GetAllAsync();
@@ -62,7 +62,7 @@ public class RoleController : ControllerBase
   }
 
   [HttpPost]
-  [Authorize("roles:write")]
+  [Authorize("role:write")]
   public async Task<ActionResult<RoleModel>> Create(CreateRoleRequest createRoleRequest)
   {
     ValidationResult validationResult = await _createRoleRequestValidator.ValidateAsync(createRoleRequest);
@@ -85,7 +85,7 @@ public class RoleController : ControllerBase
   }
 
   [HttpPut("{id}")]
-  [Authorize("roles:write")]
+  [Authorize("role:write")]
   public async Task<ActionResult<RoleModel>> Update(int id, UpdateRoleRequest updateRoleRequest)
   {
     ValidationResult validationResult = await _updateRoleRequestValidator.ValidateAsync(updateRoleRequest);
@@ -115,7 +115,7 @@ public class RoleController : ControllerBase
   }
 
   [HttpDelete("{id}")]
-  [Authorize("roles:write")]
+  [Authorize("role:delete")]
   public async Task<ActionResult> DeleteRole(int id)
   {
     var result = await _roleService.DeleteAsync(id);
