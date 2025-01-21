@@ -95,5 +95,7 @@ dotnet new gitignore
 - ☐ API Documentation
 - ☐ Database Migration
 - ☐ Versioning
+- ☐ Resilience and Fault Tolerance
+  - <span style="font-size:13px;">Implemented using `Polly` for strategies like retries, circuit breakers, and fallback policies.</span>
 
 Happy coding! 😊
