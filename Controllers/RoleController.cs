@@ -4,12 +4,14 @@ using LibraCore.Backend.DTOs;
 using LibraCore.Backend.DTOs.Role;
 using LibraCore.Backend.Models;
 using LibraCore.Backend.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraCore.Backend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class RoleController : ControllerBase
 {
   private readonly ILogger<RoleController> _logger;
@@ -26,6 +28,7 @@ public class RoleController : ControllerBase
   }
 
   [HttpGet("{id}")]
+  [Authorize("roles:read")]
   public async Task<ActionResult<RoleModel>> GetById(int id)
   {
     if (id <= 0)
@@ -44,6 +47,7 @@ public class RoleController : ControllerBase
   }
 
   [HttpGet]
+  [Authorize("roles:read")]
   public async Task<ActionResult<IEnumerable<RoleModel>>> GetAll()
   {
     var roles = await _roleService.GetAllAsync();
@@ -58,6 +62,7 @@ public class RoleController : ControllerBase
   }
 
   [HttpPost]
+  [Authorize("roles:write")]
   public async Task<ActionResult<RoleModel>> Create(CreateRoleRequest createRoleRequest)
   {
     ValidationResult validationResult = await _createRoleRequestValidator.ValidateAsync(createRoleRequest);
@@ -80,6 +85,7 @@ public class RoleController : ControllerBase
   }
 
   [HttpPut("{id}")]
+  [Authorize("roles:write")]
   public async Task<ActionResult<RoleModel>> Update(int id, UpdateRoleRequest updateRoleRequest)
   {
     ValidationResult validationResult = await _updateRoleRequestValidator.ValidateAsync(updateRoleRequest);
@@ -109,6 +115,7 @@ public class RoleController : ControllerBase
   }
 
   [HttpDelete("{id}")]
+  [Authorize("roles:write")]
   public async Task<ActionResult> DeleteRole(int id)
   {
     var result = await _roleService.DeleteAsync(id);
