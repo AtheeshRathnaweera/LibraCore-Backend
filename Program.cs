@@ -1,8 +1,10 @@
 using System.Text.Json;
+using FluentValidation;
 using LibraCore.Backend.Data;
 using LibraCore.Backend.Middlewares;
 using LibraCore.Backend.Services.Implementations;
 using LibraCore.Backend.Services.Interfaces;
+using LibraCore.Backend.Validators;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -56,6 +58,9 @@ void RegisterServices(WebApplicationBuilder builder)
     WriteIndented = false
   };
   builder.Services.AddSingleton(globalJsonOptions);
+
+  // Registers all validators from the assembly that contains the CreateRoleRequestValidator class
+  builder.Services.AddValidatorsFromAssemblyContaining<CreateRoleRequestValidator>();
 
   builder.Services.AddControllers()
   .AddJsonOptions(options =>
