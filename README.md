@@ -79,11 +79,15 @@ dotnet new gitignore
 
 ## ✅ Key Concepts Covered
 - ☑︎ ORM for MySQL
+  - Using the `EntityFrameworkCore` to interact with the `MySQL` database.
 - ☑︎ Basic CRUD operations
 - ☑︎ Centralized exception handling
-- ☑︎ Sensitive credentials management using environment variables
+  - Using the `Middleware` to streamline error handling across the application.
+- ☑︎ Sensitive credentials management
+  - Storing credentials securely with the `Environment Variables`.
 - ☐ Authentication and Authorization
-- ☐ Input Validation
+- ☑︎ Input Validation
+  - Validating request bodies with the `FluentValidation` library.
 - ☐ Pagination and Filtering
 - ☐ Logging and Monitoring
 - ☐ Unit Testing
