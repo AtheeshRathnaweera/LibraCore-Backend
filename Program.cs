@@ -60,6 +60,7 @@ void RegisterServices(WebApplicationBuilder builder)
 
   builder.Services.AddScoped<IRoleService, RoleService>();
   builder.Services.AddScoped<IUserStatusService, UserStatusService>();
+  builder.Services.AddScoped<IUserService, UserService>();
 
   // Configure global JsonSerializerOptions in the DI container
   var globalJsonOptions = new JsonSerializerOptions
@@ -72,8 +73,7 @@ void RegisterServices(WebApplicationBuilder builder)
   // Registers all validators from the assembly that contains the CreateRoleRequestValidator class
   builder.Services.AddValidatorsFromAssemblyContaining<CreateRoleRequestValidator>();
 
-  builder.Services.AddControllers()
-  .AddJsonOptions(options =>
+  builder.Services.AddControllers().AddJsonOptions(options =>
   {
     options.JsonSerializerOptions.PropertyNamingPolicy = globalJsonOptions.PropertyNamingPolicy;
     options.JsonSerializerOptions.WriteIndented = globalJsonOptions.WriteIndented;
