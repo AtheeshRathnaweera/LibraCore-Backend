@@ -1,7 +1,6 @@
 using System.Text.Json;
 using FluentValidation;
 using LibraCore.Backend.Authorization.Handlers;
-using LibraCore.Backend.Authorization.Requirements;
 using LibraCore.Backend.Configurations;
 using LibraCore.Backend.Data;
 using LibraCore.Backend.Middlewares;
@@ -56,6 +55,8 @@ void RegisterServices(WebApplicationBuilder builder)
   Auth0Configuration.AddAuth0Authorization(builder.Services, builder.Configuration);
 
   builder.Services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
+  builder.Services.AddScoped<
+    IAuthorizationMiddlewareResultHandler, AuthorizationErrorHandlingMiddleware>();
 
   builder.Services.AddScoped<IRoleService, RoleService>();
   builder.Services.AddScoped<IUserStatusService, UserStatusService>();
