@@ -11,4 +11,5 @@ public class MainDBContext : DbContext
 
   public required DbSet<RoleEntity> Role { get; set; }
   public required DbSet<UserStatusEntity> UserStatus { get; set; }
+  public required DbSet<UserEntity> User { get; set; }
 }
