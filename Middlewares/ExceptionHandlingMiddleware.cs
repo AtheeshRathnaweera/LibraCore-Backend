@@ -19,18 +19,20 @@ public class ExceptionHandlingMiddleware
   {
     try
     {
+      _logger.LogInformation("Processing request: {Method} {Path}", context.Request.Method, context.Request.Path);
       await _next(context); // Proceed to the next middleware
+      _logger.LogInformation("Request processed successfully: {Method} {Path}", context.Request.Method, context.Request.Path);
     }
     catch (Exception ex)
     {
-      _logger.LogError(ex, "An error occurred while processing the request.");
+      _logger.LogError(ex, "An error occurred while processing the request: {Method} {Path}", context.Request.Method, context.Request.Path);
       await HandleExceptionAsync(context, ex);
     }
   }
 
   private Task HandleExceptionAsync(HttpContext context, Exception exception)
   {
-    context.Response.ContentType = "application/json";
+    _logger.LogInformation("Handling exception: {ExceptionType}", exception.GetType().Name);
 
     // Determine the status code and message based on exception type
     var (statusCode, message) = exception switch
@@ -41,8 +43,6 @@ public class ExceptionHandlingMiddleware
       KeyNotFoundException => ((int)HttpStatusCode.NotFound, "The requested resource could not be found."),
       _ => ((int)HttpStatusCode.InternalServerError, "An unexpected error occurred. Please try again later.")
     };
-
-    context.Response.StatusCode = statusCode;
 
     var response = new ExceptionHandlerResponse
     {
@@ -58,6 +58,9 @@ public class ExceptionHandlingMiddleware
     };
 
     var options = context.RequestServices.GetRequiredService<JsonSerializerOptions>();
+
+    context.Response.ContentType = "application/json";
+    context.Response.StatusCode = statusCode;
     return context.Response.WriteAsync(JsonSerializer.Serialize(response, options));
   }
 }
