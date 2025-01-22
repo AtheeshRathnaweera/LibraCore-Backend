@@ -42,17 +42,7 @@ public class UserService : IUserService
   {
     var existingUser = await _dbContext.User.FindAsync(id) ?? throw new ArgumentNullException(nameof(userModel), "User to update cannot be found");
 
-    existingUser.FirstName = userModel.FirstName;
-    existingUser.LastName = userModel.LastName;
-    existingUser.AddressOne = userModel.AddressOne;
-    existingUser.AddressTwo = userModel.AddressTwo;
-    existingUser.City = userModel.City;
-    existingUser.District = userModel.District;
-    existingUser.Email = userModel.Email;
-    existingUser.PhoneNumber = userModel.PhoneNumber;
-    existingUser.NIC = userModel.NIC;
-    existingUser.DateOfBirth = userModel.DateOfBirth;
-
+    UserMapper.UpdateEntityFromModel(existingUser, userModel);
     await _dbContext.SaveChangesAsync();
 
     return UserMapper.EntityToModel(existingUser);

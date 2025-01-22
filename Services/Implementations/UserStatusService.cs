@@ -40,11 +40,8 @@ public class UserStatusService : IUserStatusService
   public async Task<UserStatusModel> UpdateAsync(int id, UserStatusModel userStatusModel)
   {
     var existingUserStatus = await _dbContext.UserStatus.FindAsync(id) ?? throw new ArgumentNullException(nameof(userStatusModel), "User Status to update cannot be found");
-    if (!string.IsNullOrWhiteSpace(userStatusModel.Name))
-    {
-      existingUserStatus.Name = userStatusModel.Name;
-    }
 
+    UserStatusMapper.UpdateEntityFromModel(existingUserStatus, userStatusModel);
     await _dbContext.SaveChangesAsync();
 
     return UserStatusMapper.EntityToModel(existingUserStatus);

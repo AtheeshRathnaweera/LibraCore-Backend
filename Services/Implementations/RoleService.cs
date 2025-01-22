@@ -41,11 +41,8 @@ public class RoleService : IRoleService
   public async Task<RoleModel> UpdateAsync(int id, RoleModel roleModel)
   {
     var existingRole = await _dbContext.Role.FindAsync(id) ?? throw new ArgumentNullException(nameof(roleModel), "Role to update cannot be found");
-    if (!string.IsNullOrWhiteSpace(roleModel.Name))
-    {
-      existingRole.Name = roleModel.Name;
-    }
 
+    RoleMapper.UpdateEntityFromModel(existingRole, roleModel);
     await _dbContext.SaveChangesAsync();
 
     return RoleMapper.EntityToModel(existingRole);
