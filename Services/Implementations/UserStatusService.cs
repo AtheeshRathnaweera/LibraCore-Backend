@@ -45,7 +45,6 @@ public class UserStatusService : IUserStatusService
       existingUserStatus.Name = userStatusModel.Name;
     }
 
-    existingUserStatus.UpdatedAt = DateTime.UtcNow;
     await _dbContext.SaveChangesAsync();
 
     return UserStatusMapper.EntityToModel(existingUserStatus);

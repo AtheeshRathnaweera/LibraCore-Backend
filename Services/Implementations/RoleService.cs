@@ -46,7 +46,6 @@ public class RoleService : IRoleService
       existingRole.Name = roleModel.Name;
     }
 
-    existingRole.UpdatedAt = DateTime.UtcNow;
     await _dbContext.SaveChangesAsync();
 
     return RoleMapper.EntityToModel(existingRole);
