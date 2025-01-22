@@ -1,5 +1,6 @@
 using LibraCore.Backend.Data;
 using LibraCore.Backend.Entities;
+using LibraCore.Backend.Mappers;
 using LibraCore.Backend.Models;
 using LibraCore.Backend.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -18,37 +19,23 @@ public class UserService : IUserService
   public async Task<UserModel?> GetAsync(int id)
   {
     var userEntity = await _dbContext.User.FindAsync(id);
-    return userEntity != null ? MapEntityToModel(userEntity) : null;
+    return userEntity != null ? UserMapper.EntityToModel(userEntity) : null;
   }
 
   public async Task<IEnumerable<UserModel>> GetAllAsync()
   {
     var users = await _dbContext.User.ToListAsync();
-    return users.Select(MapEntityToModel);
+    return users.Select(UserMapper.EntityToModel);
   }
 
   public async Task<UserModel> CreateAsync(UserModel userModel)
   {
-    UserEntity userEntity = new()
-    {
-      FirstName = userModel.FirstName,
-      LastName = userModel.LastName,
-      AddressOne = userModel.AddressOne,
-      AddressTwo = userModel.AddressTwo,
-      City = userModel.City,
-      District = userModel.District,
-      Email = userModel.Email,
-      PhoneNumber = userModel.PhoneNumber,
-      NIC = userModel.NIC,
-      DoB = userModel.DoB,
-      CreatedAt = userModel.CreatedAt,
-      UpdatedAt = userModel.UpdatedAt
-    };
+    UserEntity userEntity = UserMapper.ModelToEntity(userModel);
 
     _dbContext.User.Add(userEntity);
     await _dbContext.SaveChangesAsync();
 
-    return MapEntityToModel(userEntity);
+    return UserMapper.EntityToModel(userEntity);
   }
 
   public async Task<UserModel> UpdateAsync(int id, UserModel userModel)
@@ -57,11 +44,10 @@ public class UserService : IUserService
 
     existingUser.FirstName = userModel.FirstName;
     existingUser.LastName = userModel.LastName;
-    existingUser.UpdatedAt = DateTime.UtcNow;
 
     await _dbContext.SaveChangesAsync();
 
-    return MapEntityToModel(existingUser);
+    return UserMapper.EntityToModel(existingUser);
   }
 
   public async Task<bool> DeleteAsync(int id)
@@ -76,25 +62,5 @@ public class UserService : IUserService
     await _dbContext.SaveChangesAsync();
 
     return true;
-  }
-
-  private static UserModel MapEntityToModel(UserEntity userEntity)
-  {
-    return new UserModel
-    {
-      Id = userEntity.Id,
-      FirstName = userEntity.FirstName,
-      LastName = userEntity.LastName,
-      AddressOne = userEntity.AddressOne,
-      AddressTwo = userEntity.AddressTwo,
-      City = userEntity.City,
-      District = userEntity.District,
-      Email = userEntity.Email,
-      PhoneNumber = userEntity.PhoneNumber,
-      NIC = userEntity.NIC,
-      DoB = userEntity.DoB,
-      CreatedAt = userEntity.CreatedAt,
-      UpdatedAt = userEntity.UpdatedAt
-    };
   }
 }
