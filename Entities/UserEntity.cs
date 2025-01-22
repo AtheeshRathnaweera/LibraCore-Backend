@@ -1,8 +1,11 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using LibraCore.Backend.Entities.Base;
 
 namespace LibraCore.Backend.Entities;
 
-public class UserEntity{
+[Table("user")]
+public class UserEntity : BaseEntity
+{
   public int Id { get; set; }
 
   [Column("first_name")]
@@ -28,11 +31,6 @@ public class UserEntity{
 
   public string? NIC { get; set; }
 
-  public DateTime DoB { get; set; }
-
-  [Column("created_at")]
-  public DateTime CreatedAt { get; set; }
-
-  [Column("updated_at")]
-  public DateTime? UpdatedAt { get; set; }
+  [Column("date_of_birth")]
+  public DateTime DateOfBirth { get; set; }
 }

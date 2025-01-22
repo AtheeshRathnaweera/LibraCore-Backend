@@ -1,17 +1,12 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using LibraCore.Backend.Entities.Base;
 
 namespace LibraCore.Backend.Entities;
 
 [Table("user_status")]
-public class UserStatusEntity
+public class UserStatusEntity : BaseEntity
 {
   public int Id { get; set; }
 
   public required string Name { get; set; }
-
-  [Column("created_at")]
-  public DateTime CreatedAt { get; set; }
-  
-  [Column("updated_at")]
-  public DateTime? UpdatedAt { get; set; }
 }
