@@ -1,6 +1,7 @@
 using FluentValidation;
 using FluentValidation.Results;
 using LibraCore.Backend.DTOs;
+using LibraCore.Backend.DTOs.User;
 using LibraCore.Backend.Models;
 using LibraCore.Backend.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -13,12 +14,16 @@ namespace LibraCore.Backend.Controllers;
 [Authorize]
 public class UserController : ControllerBase
 {
-  private readonly ILogger<RoleController> _logger;
+  private readonly ILogger<UserController> _logger;
   private readonly IValidator<CreateUserRequest> _createUserRequestValidator;
   private readonly IValidator<UpdateUserRequest> _updateUserRequestValidator;
   private readonly IUserService _userService;
 
-  public UserController(ILogger<RoleController> logger, IValidator<CreateUserRequest> createUserRequestValidator, IValidator<UpdateUserRequest> updateUserRequestValidator, IUserService userService)
+  public UserController(
+    ILogger<UserController> logger,
+    IValidator<CreateUserRequest> createUserRequestValidator,
+    IValidator<UpdateUserRequest> updateUserRequestValidator,
+    IUserService userService)
   {
     _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     _createUserRequestValidator = createUserRequestValidator ?? throw new ArgumentNullException(nameof(createUserRequestValidator));
@@ -72,10 +77,20 @@ public class UserController : ControllerBase
       return BadRequest(new RequestValidationFailureResponse(validationResult.ToDictionary()));
     }
 
-    var newUser = new UserModel(
+    var newUser = new UserModel
+    (
       firstName: createUserRequest.FirstName,
-      lastName: createUserRequest.LastName
+      lastName: createUserRequest.LastName,
+      addressOne: createUserRequest.AddressOne,
+      addressTwo: createUserRequest.AddressTwo,
+      city: createUserRequest.City,
+      district: createUserRequest.District,
+      email: createUserRequest.Email,
+      phoneNumber: createUserRequest.PhoneNumber,
+      nic: createUserRequest.NIC,
+      dateOfBirth: createUserRequest.DateOfBirth
     );
+
     var createdUser = await _userService.CreateAsync(newUser);
 
     _logger.LogInformation("User created successfully with Name: {Name}", createdUser.FirstName);
