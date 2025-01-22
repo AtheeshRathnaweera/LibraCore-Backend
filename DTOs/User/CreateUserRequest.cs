@@ -1,4 +1,4 @@
-namespace LibraCore.Backend.DTOs;
+namespace LibraCore.Backend.DTOs.User;
 
 public class CreateUserRequest
 {
@@ -19,6 +19,11 @@ public class CreateUserRequest
   public string? PhoneNumber { get; set; }
 
   public string? NIC { get; set; }
-  
-  public DateTime DoB { get; set; }
+
+  public DateTime DateOfBirth { get; set; }
+
+  public override string ToString()
+  {
+    return $"FirstName: {FirstName}, LastName: {LastName}, AddressOne: {AddressOne}, AddressTwo: {AddressTwo}, City: {City}, District: {District}, Email: {Email}, PhoneNumber: {PhoneNumber}, NIC: {NIC}, DateOfBirth: {DateOfBirth}";
+  }
 }
