@@ -6,4 +6,9 @@ public static class CommonUtils
   {
     return !date.Equals(default(DateTime));
   }
+
+  public static bool PropertyExists(dynamic obj, string propertyName)
+  {
+    return obj != null && obj?.GetType().GetProperty(propertyName) != null;
+  }
 }
