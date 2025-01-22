@@ -38,7 +38,7 @@ public class UserStatusController : ControllerBase
     if (userStatus == null)
     {
       _logger.LogInformation("No user status found.");
-      return NotFound(new MessageResponse("Role user status found."));
+      return NotFound(new MessageResponse("User status not found."));
     }
     return Ok(userStatus);
   }
@@ -106,7 +106,7 @@ public class UserStatusController : ControllerBase
   }
 
   [HttpDelete("{id}")]
-  public async Task<ActionResult> DeleteRole(int id)
+  public async Task<ActionResult> Delete(int id)
   {
     var result = await _userStatusService.DeleteAsync(id);
 

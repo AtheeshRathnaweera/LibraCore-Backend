@@ -27,26 +27,6 @@ public class UserStatusService : IUserStatusService
     return userStatuses.Select(UserStatusMapper.EntityToModel);
   }
 
-  public async Task<RoleModel> CreateAsync(RoleModel roleModel)
-  {
-    RoleEntity roleEntity = new()
-    {
-      Name = roleModel.Name ?? throw new ArgumentNullException(nameof(roleModel.Name)),
-      CreatedAt = roleModel.CreatedAt
-    };
-
-    _dbContext.Role.Add(roleEntity);
-    await _dbContext.SaveChangesAsync();
-
-    return new RoleModel
-    {
-      Id = roleEntity.Id,
-      Name = roleEntity.Name,
-      CreatedAt = roleEntity.CreatedAt,
-      UpdatedAt = roleEntity.UpdatedAt
-    };
-  }
-
   public async Task<UserStatusModel> CreateAsync(UserStatusModel userStatusModel)
   {
     UserStatusEntity userStatusEntity = UserStatusMapper.ModelToEntity(userStatusModel);
