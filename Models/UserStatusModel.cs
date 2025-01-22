@@ -18,8 +18,6 @@ public class UserStatusModel
   public UserStatusModel(string name)
   {
     Name = name;
-    CreatedAt = DateTime.UtcNow;
-    UpdatedAt = CreatedAt;
   }
 
   public UserStatusModel(int id, string name)
