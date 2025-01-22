@@ -97,4 +97,60 @@ public class UserController : ControllerBase
 
     return CreatedAtAction(nameof(GetById), new { id = createdUser.Id }, createdUser);
   }
+
+  [HttpPut("{id}")]
+  [Authorize("user:write")]
+  public async Task<ActionResult<UserModel>> Update(int id, UpdateUserRequest updateUserRequest){
+    ValidationResult validationResult = await _updateUserRequestValidator.ValidateAsync(updateUserRequest);
+
+    if (!validationResult.IsValid)
+    {
+      _logger.LogWarning("Invalid update request: {errors}", validationResult.Errors);
+      return BadRequest(new RequestValidationFailureResponse(validationResult.ToDictionary()));
+    }
+
+    if (id != updateUserRequest.Id)
+    {
+      _logger.LogWarning("'Id' in the request body does not match the 'Id' in the path: {BodyId} vs {PathId}", updateUserRequest.Id, id);
+      return BadRequest(new RequestValidationFailureResponse("Id", "The 'Id' in the request body must match the 'Id' in the path."));
+    }
+
+    var userWithUpdates = new UserModel
+    (
+      firstName: updateUserRequest.FirstName,
+      lastName: updateUserRequest.LastName,
+      addressOne: updateUserRequest.AddressOne,
+      addressTwo: updateUserRequest.AddressTwo,
+      city: updateUserRequest.City,
+      district: updateUserRequest.District,
+      email: updateUserRequest.Email,
+      phoneNumber: updateUserRequest.PhoneNumber,
+      nic: updateUserRequest.NIC,
+      dateOfBirth: updateUserRequest.DateOfBirth
+    );
+    var updatedUser = await _userService.UpdateAsync(id, userWithUpdates);
+
+    if (updatedUser == null)
+    {
+      _logger.LogWarning("User not found for update: {UserId}", id);
+      return NotFound(new MessageResponse($"User with ID {id} not found."));
+    }
+
+    return Ok(updatedUser);
+  }
+
+  [HttpDelete("{id}")]
+  [Authorize("user:delete")]
+  public async Task<ActionResult> DeleteRole(int id)
+  {
+    var result = await _userService.DeleteAsync(id);
+
+    if (!result)
+    {
+      _logger.LogWarning("User with id {Id} not found.", id);
+      return NotFound(new MessageResponse($"User with id {id} not found."));
+    }
+
+    return NoContent();
+  }
 }
