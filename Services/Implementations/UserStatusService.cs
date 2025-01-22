@@ -18,13 +18,13 @@ public class UserStatusService : IUserStatusService
   public async Task<UserStatusModel?> GetAsync(int id)
   {
     var userStatusEntity = await _dbContext.UserStatus.FindAsync(id);
-    return userStatusEntity != null ? MapEntityToModel(userStatusEntity) : null;
+    return userStatusEntity != null ? UserStatusMapper.EntityToModel(userStatusEntity) : null;
   }
 
   public async Task<IEnumerable<UserStatusModel>> GetAllAsync()
   {
     var userStatuses = await _dbContext.UserStatus.ToListAsync();
-    return userStatuses.Select(MapEntityToModel);
+    return userStatuses.Select(UserStatusMapper.EntityToModel);
   }
 
   public async Task<RoleModel> CreateAsync(RoleModel roleModel)
@@ -49,17 +49,12 @@ public class UserStatusService : IUserStatusService
 
   public async Task<UserStatusModel> CreateAsync(UserStatusModel userStatusModel)
   {
-    UserStatusEntity userStatusEntity = new()
-    {
-      Name = userStatusModel.Name ?? throw new ArgumentNullException(nameof(userStatusModel.Name)),
-      CreatedAt = userStatusModel.CreatedAt,
-      UpdatedAt = userStatusModel.UpdatedAt
-    };
+    UserStatusEntity userStatusEntity = UserStatusMapper.ModelToEntity(userStatusModel);
 
     _dbContext.UserStatus.Add(userStatusEntity);
     await _dbContext.SaveChangesAsync();
 
-    return MapEntityToModel(userStatusEntity);
+    return UserStatusMapper.EntityToModel(userStatusEntity);
   }
 
   public async Task<UserStatusModel> UpdateAsync(int id, UserStatusModel userStatusModel)
@@ -71,10 +66,9 @@ public class UserStatusService : IUserStatusService
     }
 
     existingUserStatus.UpdatedAt = DateTime.UtcNow;
-
     await _dbContext.SaveChangesAsync();
 
-    return MapEntityToModel(existingUserStatus);
+    return UserStatusMapper.EntityToModel(existingUserStatus);
   }
 
   public async Task<bool> DeleteAsync(int id)
@@ -89,16 +83,5 @@ public class UserStatusService : IUserStatusService
     await _dbContext.SaveChangesAsync();
 
     return true;
-  }
-
-  private static UserStatusModel MapEntityToModel(UserStatusEntity userStatusEntity)
-  {
-    return new UserStatusModel
-    {
-      Id = userStatusEntity.Id,
-      Name = userStatusEntity.Name,
-      CreatedAt = userStatusEntity.CreatedAt,
-      UpdatedAt = userStatusEntity.UpdatedAt
-    };
   }
 }
