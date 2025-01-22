@@ -8,8 +8,12 @@ public class MainDBContext : DbContext
 {
   // DbSet properties for the entities
   public required DbSet<RoleEntity> Role { get; set; }
+
   public required DbSet<UserStatusEntity> UserStatus { get; set; }
+
   public required DbSet<UserEntity> User { get; set; }
+
+  public required DbSet<UserActiveStatusEntity> UserActiveStatus { get; set; }
 
   public MainDBContext(DbContextOptions<MainDBContext> context) : base(context)
   {
