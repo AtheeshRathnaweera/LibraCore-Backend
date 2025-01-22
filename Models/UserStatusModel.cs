@@ -12,7 +12,6 @@ public class UserStatusModel
 
   public UserStatusModel()
   {
-
   }
 
   public UserStatusModel(string name)

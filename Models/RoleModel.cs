@@ -12,7 +12,6 @@ public class RoleModel
 
   public RoleModel()
   {
-
   }
 
   public RoleModel(string name)
