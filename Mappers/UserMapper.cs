@@ -67,4 +67,19 @@ public static class UserMapper
       UpdatedAt = CommonUtils.PropertyExists(dynamicDTO, "UpdatedAt") ? dynamicDTO.UpdatedAt : null
     };
   }
+
+  // Method to update properties of an existing UserEntity based on the UserModel
+  public static void UpdateEntityFromModel(UserEntity existingUser, UserModel userModel)
+  {
+    if (!string.IsNullOrWhiteSpace(userModel.FirstName)) existingUser.FirstName = userModel.FirstName;
+    if (!string.IsNullOrWhiteSpace(userModel.LastName)) existingUser.LastName = userModel.LastName;
+    if (!string.IsNullOrWhiteSpace(userModel.AddressOne)) existingUser.AddressOne = userModel.AddressOne;
+    if (!string.IsNullOrWhiteSpace(userModel.AddressTwo)) existingUser.AddressTwo = userModel.AddressTwo;
+    if (!string.IsNullOrWhiteSpace(userModel.City)) existingUser.City = userModel.City;
+    if (!string.IsNullOrWhiteSpace(userModel.District)) existingUser.District = userModel.District;
+    if (!string.IsNullOrWhiteSpace(userModel.Email)) existingUser.Email = userModel.Email;
+    if (!string.IsNullOrWhiteSpace(userModel.PhoneNumber)) existingUser.PhoneNumber = userModel.PhoneNumber;
+    if (!string.IsNullOrWhiteSpace(userModel.NIC)) existingUser.NIC = userModel.NIC;
+    if (userModel.DateOfBirth != default) existingUser.DateOfBirth = userModel.DateOfBirth;
+  }
 }

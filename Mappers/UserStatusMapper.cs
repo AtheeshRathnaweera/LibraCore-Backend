@@ -24,4 +24,9 @@ public static class UserStatusMapper
       UpdatedAt = userStatusModel.UpdatedAt
     };
   }
+
+  public static void UpdateEntityFromModel(UserStatusEntity existingUserStatus, UserStatusModel userStatusModel)
+  {
+    if (!string.IsNullOrWhiteSpace(userStatusModel.Name)) existingUserStatus.Name = userStatusModel.Name;
+  }
 }

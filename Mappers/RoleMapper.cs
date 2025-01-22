@@ -38,4 +38,9 @@ public static class RoleMapper
       Name = CommonUtils.PropertyExists(dynamicDTO, "Name") ? dynamicDTO.Name : null
     };
   }
+
+  public static void UpdateEntityFromModel(RoleEntity existingRole, RoleModel roleModel)
+  {
+    if (!string.IsNullOrWhiteSpace(roleModel.Name)) existingRole.Name = roleModel.Name;
+  }
 }
