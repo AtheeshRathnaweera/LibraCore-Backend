@@ -33,12 +33,6 @@ public class UserModel
 
   }
 
-  public UserModel(string? firstName, string? lastName)
-  {
-    FirstName = firstName;
-    LastName = lastName;
-  }
-
   public UserModel(
     string? firstName, string? lastName, string? addressOne, string? addressTwo,
     string? city, string? district, string? email, string? phoneNumber, string? nic,
