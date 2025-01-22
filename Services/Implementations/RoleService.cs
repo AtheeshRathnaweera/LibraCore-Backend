@@ -1,5 +1,6 @@
 using LibraCore.Backend.Data;
 using LibraCore.Backend.Entities;
+using LibraCore.Backend.Mappers;
 using LibraCore.Backend.Models;
 using LibraCore.Backend.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -18,34 +19,23 @@ public class RoleService : IRoleService
   public async Task<RoleModel?> GetAsync(int id)
   {
     var roleEntity = await _dbContext.Role.FindAsync(id);
-    return roleEntity != null ? MapEntityToModel(roleEntity) : null;
+    return roleEntity != null ? RoleMapper.EntityToModel(roleEntity) : null;
   }
 
   public async Task<IEnumerable<RoleModel>> GetAllAsync()
   {
     var roles = await _dbContext.Role.ToListAsync();
-    return roles.Select(MapEntityToModel);
+    return roles.Select(RoleMapper.EntityToModel);
   }
 
   public async Task<RoleModel> CreateAsync(RoleModel roleModel)
   {
-    RoleEntity roleEntity = new()
-    {
-      Name = roleModel.Name ?? throw new ArgumentNullException(nameof(roleModel.Name)),
-      CreatedAt = roleModel.CreatedAt,
-      UpdatedAt = roleModel.UpdatedAt
-    };
+    RoleEntity roleEntity = RoleMapper.ModelToEntity(roleModel);
 
     _dbContext.Role.Add(roleEntity);
     await _dbContext.SaveChangesAsync();
 
-    return new RoleModel
-    {
-      Id = roleEntity.Id,
-      Name = roleEntity.Name,
-      CreatedAt = roleEntity.CreatedAt,
-      UpdatedAt = roleEntity.UpdatedAt
-    };
+    return RoleMapper.EntityToModel(roleEntity);
   }
 
   public async Task<RoleModel> UpdateAsync(int id, RoleModel roleModel)
@@ -57,16 +47,9 @@ public class RoleService : IRoleService
     }
 
     existingRole.UpdatedAt = DateTime.UtcNow;
-
     await _dbContext.SaveChangesAsync();
 
-    return new RoleModel
-    {
-      Id = existingRole.Id,
-      Name = existingRole.Name,
-      CreatedAt = existingRole.CreatedAt,
-      UpdatedAt = existingRole.UpdatedAt
-    };
+    return RoleMapper.EntityToModel(existingRole);
   }
 
   public async Task<bool> DeleteAsync(int id)
@@ -81,16 +64,5 @@ public class RoleService : IRoleService
     await _dbContext.SaveChangesAsync();
 
     return true;
-  }
-
-  private static RoleModel MapEntityToModel(RoleEntity roleEntity)
-  {
-    return new RoleModel
-    {
-      Id = roleEntity.Id,
-      Name = roleEntity.Name,
-      CreatedAt = roleEntity.CreatedAt,
-      UpdatedAt = roleEntity.UpdatedAt
-    };
   }
 }
