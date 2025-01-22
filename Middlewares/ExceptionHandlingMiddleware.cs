@@ -1,6 +1,8 @@
 using System.Net;
 using System.Text.Json;
 using LibraCore.Backend.DTOs;
+using Microsoft.EntityFrameworkCore;
+using MySql.Data.MySqlClient;
 
 namespace LibraCore.Backend.Middlewares;
 
@@ -41,6 +43,7 @@ public class ExceptionHandlingMiddleware
       UnauthorizedAccessException => ((int)HttpStatusCode.Unauthorized, "Access is denied. Please check your credentials."),
       InvalidOperationException => ((int)HttpStatusCode.Conflict, "The operation is not valid in the current state."),
       KeyNotFoundException => ((int)HttpStatusCode.NotFound, "The requested resource could not be found."),
+      DbUpdateException dbUpdateEx when dbUpdateEx.InnerException is MySqlException mySqlEx => HandleMySqlException(mySqlEx),
       _ => ((int)HttpStatusCode.InternalServerError, "An unexpected error occurred. Please try again later.")
     };
 
@@ -62,5 +65,25 @@ public class ExceptionHandlingMiddleware
     context.Response.ContentType = "application/json";
     context.Response.StatusCode = statusCode;
     return context.Response.WriteAsync(JsonSerializer.Serialize(response, options));
+  }
+
+  private (int statusCode, string message) HandleMySqlException(MySqlException mySqlEx)
+  {
+    var baseMessage = mySqlEx.Message;
+
+    return mySqlEx.Number switch
+    {
+      1062 => ((int)HttpStatusCode.Conflict, $"A unique constraint violation occurred: {baseMessage}"),
+      1451 => ((int)HttpStatusCode.BadRequest, "Cannot delete or update because of existing references to this resource."),
+      1452 => ((int)HttpStatusCode.BadRequest, "Cannot add or update due to invalid foreign key reference."),
+      1146 => ((int)HttpStatusCode.InternalServerError, "The specified table does not exist. Please contact support."),
+      1048 => ((int)HttpStatusCode.BadRequest, $"A required column is missing or contains null data: {baseMessage}"),
+      1364 => ((int)HttpStatusCode.BadRequest, $"A required field is missing and has no default value: {baseMessage}"),
+      1054 => ((int)HttpStatusCode.InternalServerError, $"The specified column does not exist in the database: {baseMessage}"),
+      1406 => ((int)HttpStatusCode.BadRequest, $"The provided data exceeds the maximum allowed length: {baseMessage}"),
+      1216 => ((int)HttpStatusCode.BadRequest, $"Foreign key constraint failed while adding or updating the record: {baseMessage}"),
+      1217 => ((int)HttpStatusCode.BadRequest, $"Foreign key constraint failed while deleting the record: {baseMessage}"),
+      _ => ((int)HttpStatusCode.InternalServerError, $"A database error occurred: {baseMessage}")
+    };
   }
 }
