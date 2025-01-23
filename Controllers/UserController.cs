@@ -15,8 +15,11 @@ namespace LibraCore.Backend.Controllers;
 public class UserController : ControllerBase
 {
   private readonly ILogger<UserController> _logger;
+
   private readonly IValidator<CreateUserRequest> _createUserRequestValidator;
+
   private readonly IValidator<UpdateUserRequest> _updateUserRequestValidator;
+  
   private readonly IUserService _userService;
 
   public UserController(
@@ -78,19 +81,18 @@ public class UserController : ControllerBase
     }
 
     var newUser = new UserModel
-    (
-      firstName: createUserRequest.FirstName,
-      lastName: createUserRequest.LastName,
-      addressOne: createUserRequest.AddressOne,
-      addressTwo: createUserRequest.AddressTwo,
-      city: createUserRequest.City,
-      district: createUserRequest.District,
-      email: createUserRequest.Email,
-      phoneNumber: createUserRequest.PhoneNumber,
-      nic: createUserRequest.NIC,
-      dateOfBirth: createUserRequest.DateOfBirth
-    );
-
+    {
+      FirstName = createUserRequest.FirstName,
+      LastName = createUserRequest.LastName,
+      AddressOne = createUserRequest.AddressOne,
+      AddressTwo = createUserRequest.AddressTwo,
+      City = createUserRequest.City,
+      District = createUserRequest.District,
+      Email = createUserRequest.Email,
+      PhoneNumber = createUserRequest.PhoneNumber,
+      NIC = createUserRequest.NIC,
+      DateOfBirth = createUserRequest.DateOfBirth
+    };
     var createdUser = await _userService.CreateAsync(newUser);
 
     _logger.LogInformation("User created successfully with Name: {Name}", createdUser.FirstName);
@@ -116,18 +118,18 @@ public class UserController : ControllerBase
     }
 
     var userWithUpdates = new UserModel
-    (
-      firstName: updateUserRequest.FirstName,
-      lastName: updateUserRequest.LastName,
-      addressOne: updateUserRequest.AddressOne,
-      addressTwo: updateUserRequest.AddressTwo,
-      city: updateUserRequest.City,
-      district: updateUserRequest.District,
-      email: updateUserRequest.Email,
-      phoneNumber: updateUserRequest.PhoneNumber,
-      nic: updateUserRequest.NIC,
-      dateOfBirth: updateUserRequest.DateOfBirth
-    );
+    {
+      FirstName = updateUserRequest.FirstName,
+      LastName = updateUserRequest.LastName,
+      AddressOne = updateUserRequest.AddressOne,
+      AddressTwo = updateUserRequest.AddressTwo,
+      City = updateUserRequest.City,
+      District = updateUserRequest.District,
+      Email = updateUserRequest.Email,
+      PhoneNumber = updateUserRequest.PhoneNumber,
+      NIC = updateUserRequest.NIC,
+      DateOfBirth = updateUserRequest.DateOfBirth
+    };
     var updatedUser = await _userService.UpdateAsync(id, userWithUpdates);
 
     if (updatedUser == null)

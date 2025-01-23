@@ -15,8 +15,11 @@ namespace LibraCore.Backend.Controllers;
 public class RoleController : ControllerBase
 {
   private readonly ILogger<RoleController> _logger;
+
   private readonly IValidator<CreateRoleRequest> _createRoleRequestValidator;
+
   private readonly IValidator<UpdateRoleRequest> _updateRoleRequestValidator;
+
   private readonly IRoleService _roleService;
 
   public RoleController(ILogger<RoleController> logger, IValidator<CreateRoleRequest> createRoleRequestValidator, IValidator<UpdateRoleRequest> updateRoleRequestValidator, IRoleService roleService)
@@ -73,7 +76,10 @@ public class RoleController : ControllerBase
       return BadRequest(new RequestValidationFailureResponse(validationResult.ToDictionary()));
     }
 
-    var newRole = new RoleModel(name: createRoleRequest.Name!);
+    var newRole = new RoleModel
+    {
+      Name = createRoleRequest.Name
+    };
     var createdRole = await _roleService.CreateAsync(newRole);
 
     _logger.LogInformation("Role created successfully with Name: {Name}", createdRole.Name);
@@ -102,7 +108,11 @@ public class RoleController : ControllerBase
       return BadRequest(new RequestValidationFailureResponse("Id", "The 'Id' in the request body must match the 'Id' in the path."));
     }
 
-    var roleWithUpdates = new RoleModel { Id = id, Name = updateRoleRequest.Name };
+    var roleWithUpdates = new RoleModel
+    {
+      Id = id,
+      Name = updateRoleRequest.Name
+    };
     var updatedRole = await _roleService.UpdateAsync(id, roleWithUpdates);
 
     if (updatedRole == null)
