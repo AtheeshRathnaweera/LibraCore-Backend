@@ -36,6 +36,9 @@ public static class Auth0Configuration
         { "user:read", "user:read" },
         { "user:write", "user:write" },
         { "user:delete", "user:delete" },
+        { "user_active_status:read", "user_active_status:read" },
+        { "user_active_status:write", "user_active_status:write" },
+        { "user_active_status:delete", "user_active_status:delete" },
     };
 
     var authorizationBuilder = services.AddAuthorizationBuilder();
