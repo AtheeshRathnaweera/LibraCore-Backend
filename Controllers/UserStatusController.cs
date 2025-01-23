@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LibraCore.Backend.Controllers;
 
+/// <summary>
+/// Provides endpoints for managing User Statuses in the system.
+/// </summary>
 [ApiController]
 [Route("api/v{version:apiVersion}/[controller]")]
 [ApiVersion("1.0")]
@@ -31,6 +34,12 @@ public class UserStatusController : ControllerBase
     _userStatusService = userStatusService ?? throw new ArgumentNullException(nameof(userStatusService));
   }
 
+  /// <summary>
+  /// Retrieves a user status by its ID.
+  /// </summary>
+  /// <param name="id">The ID of the user status to retrieve.</param>
+  /// <returns>The user status details if found.</returns>
+  /// <remarks>Required permission: <c>user_status:read</c></remarks>
   [HttpGet("{id}")]
   [Authorize("user_status:read")]
   public async Task<ActionResult<UserStatusModel>> GetById(int id)
@@ -50,6 +59,11 @@ public class UserStatusController : ControllerBase
     return Ok(userStatus);
   }
 
+  /// <summary>
+  /// Retrieves all user statuses.
+  /// </summary>
+  /// <returns>A list of all user statuses.</returns>
+  /// <remarks>Required permission: <c>user_status:read</c></remarks>
   [HttpGet]
   [Authorize("user_status:read")]
   public async Task<ActionResult<IEnumerable<UserStatusModel>>> GetAllAsync()
@@ -65,6 +79,12 @@ public class UserStatusController : ControllerBase
     return Ok(userStatuses);
   }
 
+  /// <summary>
+  /// Creates a new user status.
+  /// </summary>
+  /// <param name="createUserStatusRequest">The details of the user status to create.</param>
+  /// <returns>The newly created user status.</returns>
+  /// <remarks>Required permission: <c>user_status:write</c></remarks>
   [HttpPost]
   [Authorize("user_status:write")]
   public async Task<ActionResult<UserStatusModel>> Create(CreateUserStatusRequest createUserStatusRequest)
@@ -88,6 +108,13 @@ public class UserStatusController : ControllerBase
     return CreatedAtAction(nameof(GetById), new { id = createdUserStatus.Id }, createdUserStatus);
   }
 
+  /// <summary>
+  /// Updates an existing user status.
+  /// </summary>
+  /// <param name="id">The ID of the user status to update.</param>
+  /// <param name="updateUserStatusRequest">The updated user status details.</param>
+  /// <returns>The updated user status details.</returns>
+  /// <remarks>Required permission: <c>user_status:write</c></remarks>
   [HttpPut("{id}")]
   [Authorize("user_status:write")]
   public async Task<ActionResult<UserStatusModel>> Update(int id, UpdateUserStatusRequest updateUserStatusRequest)
@@ -122,6 +149,12 @@ public class UserStatusController : ControllerBase
     return Ok(updatedUserStatus);
   }
 
+  /// <summary>
+  /// Deletes a user status by its ID.
+  /// </summary>
+  /// <param name="id">The ID of the user status to delete.</param>
+  /// <returns>No content if deletion is successful.</returns>
+  /// <remarks>Required permission: <c>user_status:delete</c></remarks>
   [HttpDelete("{id}")]
   [Authorize("user_status:delete")]
   public async Task<ActionResult> Delete(int id)

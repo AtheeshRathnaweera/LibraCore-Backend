@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LibraCore.Backend.Controllers;
 
+/// <summary>
+/// Provides endpoints for managing Users in the system.
+/// </summary>
 [ApiController]
 [Route("api/v{version:apiVersion}/[controller]")]
 [ApiVersion("1.0")]
@@ -35,6 +38,12 @@ public class UserController : ControllerBase
     _userService = userService ?? throw new ArgumentNullException(nameof(userService));
   }
 
+  /// <summary>
+  /// Retrieves a user by their ID.
+  /// </summary>
+  /// <param name="id">The ID of the user to retrieve.</param>
+  /// <returns>The user details if found.</returns>
+  /// <remarks>Required permission: <c>user:read</c></remarks>
   [HttpGet("{id}")]
   [Authorize("user:read")]
   public async Task<ActionResult<UserModel>> GetById(int id)
@@ -54,6 +63,11 @@ public class UserController : ControllerBase
     return Ok(user);
   }
 
+  /// <summary>
+  /// Retrieves all users.
+  /// </summary>
+  /// <returns>A list of all users.</returns>
+  /// <remarks>Required permission: <c>user:read</c></remarks>
   [HttpGet]
   [Authorize("user:read")]
   public async Task<ActionResult<IEnumerable<UserModel>>> GetAll()
@@ -69,6 +83,12 @@ public class UserController : ControllerBase
     return Ok(users);
   }
 
+  /// <summary>
+  /// Creates a new user.
+  /// </summary>
+  /// <param name="createUserRequest">The details of the user to create.</param>
+  /// <returns>The newly created user.</returns>
+  /// <remarks>Required permission: <c>user:write</c></remarks>
   [HttpPost]
   [Authorize("user:write")]
   public async Task<ActionResult<UserModel>> Create(CreateUserRequest createUserRequest)
@@ -101,6 +121,13 @@ public class UserController : ControllerBase
     return CreatedAtAction(nameof(GetById), new { id = createdUser.Id }, createdUser);
   }
 
+  /// <summary>
+  /// Updates an existing user.
+  /// </summary>
+  /// <param name="id">The ID of the user to update.</param>
+  /// <param name="updateUserRequest">The updated user details.</param>
+  /// <returns>The updated user details.</returns>
+  /// <remarks>Required permission: <c>user:write</c></remarks>
   [HttpPut("{id}")]
   [Authorize("user:write")]
   public async Task<ActionResult<UserModel>> Update(int id, UpdateUserRequest updateUserRequest){
@@ -142,6 +169,12 @@ public class UserController : ControllerBase
     return Ok(updatedUser);
   }
 
+  /// <summary>
+  /// Deletes a user by their ID.
+  /// </summary>
+  /// <param name="id">The ID of the user to delete.</param>
+  /// <returns>No content if deletion is successful.</returns>
+  /// <remarks>Required permission: <c>user:delete</c></remarks>
   [HttpDelete("{id}")]
   [Authorize("user:delete")]
   public async Task<ActionResult> DeleteRole(int id)

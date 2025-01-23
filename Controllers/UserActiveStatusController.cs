@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LibraCore.Backend.Controllers;
 
+/// <summary>
+/// Provides endpoints for managing User's Status in the system.
+/// </summary>
 [ApiController]
 [Route("api/v{version:apiVersion}/[controller]")]
 [ApiVersion("1.0")]
@@ -32,6 +35,13 @@ public class UserActiveStatusController : ControllerBase
     _userActiveStatusService = userActiveStatusService ?? throw new ArgumentNullException(nameof(userActiveStatusService));
   }
 
+  /// <summary>
+  /// Retrieves a user active status by its ID.
+  /// </summary>
+  /// <param name="id">The ID of the user active status.</param>
+  /// <param name="expand">Optional query parameter to expand nested properties.</param>
+  /// <returns>The user active status model.</returns>
+  /// <remarks>Required permission: <c>user_active_status:read</c></remarks>
   [HttpGet("{id}")]
   [Authorize("user_active_status:read")]
   public async Task<ActionResult<UserActiveStatusModel>> GetById(int id, [FromQuery] string? expand = null)
@@ -51,6 +61,12 @@ public class UserActiveStatusController : ControllerBase
     return Ok(userActiveStatus);
   }
 
+  /// <summary>
+  /// Retrieves all user active statuses.
+  /// </summary>
+  /// <param name="expand">Optional query parameter to expand nested properties.</param>
+  /// <returns>A list of user active statuses.</returns>
+  /// <remarks>Required permission: <c>user_active_status:read</c></remarks>
   [HttpGet]
   [Authorize("user_active_status:read")]
   public async Task<ActionResult<IEnumerable<UserActiveStatusModel>>> GetAll([FromQuery] string? expand = null)
@@ -66,6 +82,12 @@ public class UserActiveStatusController : ControllerBase
     return Ok(userActiveStatuses);
   }
 
+  /// <summary>
+  /// Creates a new user active status.
+  /// </summary>
+  /// <param name="createUserActiveStatusRequest">The request model for creating a user active status.</param>
+  /// <returns>The created user active status.</returns>
+  /// <remarks>Required permission: <c>user_active_status:write</c></remarks>
   [HttpPost]
   [Authorize("user_active_status:write")]
   public async Task<ActionResult<UserActiveStatusModel>> Create(CreateUserActiveStatusRequest createUserActiveStatusRequest)
@@ -90,6 +112,13 @@ public class UserActiveStatusController : ControllerBase
     return CreatedAtAction(nameof(GetById), new { id = createdUserActiveStatus.Id }, createdUserActiveStatus);
   }
 
+  /// <summary>
+  /// Updates an existing user active status.
+  /// </summary>
+  /// <param name="id">The ID of the user active status to update.</param>
+  /// <param name="updateUserActiveStatusRequest">The request model for updating the user active status.</param>
+  /// <returns>The updated user active status.</returns>
+  /// <remarks>Required permission: <c>user_active_status:write</c></remarks>
   [HttpPut("{id}")]
   [Authorize("user_active_status:write")]
   public async Task<ActionResult<RoleModel>> Update(int id, UpdateUserActiveStatusRequest updateUserActiveStatusRequest)
@@ -125,6 +154,12 @@ public class UserActiveStatusController : ControllerBase
     return Ok(updatedUserActiveStatus);
   }
 
+  /// <summary>
+  /// Deletes a user active status by its ID.
+  /// </summary>
+  /// <param name="id">The ID of the user active status to delete.</param>
+  /// <returns>204 No Content if successful.</returns>
+  /// <remarks>Required permission: <c>user_active_status:delete</c></remarks>
   [HttpDelete("{id}")]
   [Authorize("user_active_status:delete")]
   public async Task<ActionResult> DeleteRole(int id)

@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LibraCore.Backend.Controllers;
 
+/// <summary>
+/// Provides endpoints for managing roles in the system.
+/// </summary>
 [ApiController]
 [Route("api/v{version:apiVersion}/[controller]")]
 [ApiVersion("1.0")]
@@ -31,6 +34,12 @@ public class RoleController : ControllerBase
     _roleService = roleService ?? throw new ArgumentNullException(nameof(roleService));
   }
 
+  /// <summary>
+  /// Retrieves a role by its unique identifier.
+  /// </summary>
+  /// <param name="id">The unique ID of the role to retrieve.</param>
+  /// <returns>The role with the specified ID, or a 404 status if not found.</returns>
+  /// <remarks>Required permission: <c>role:read</c></remarks>
   [HttpGet("{id}")]
   [Authorize("role:read")]
   public async Task<ActionResult<RoleModel>> GetById(int id)
@@ -50,6 +59,11 @@ public class RoleController : ControllerBase
     return Ok(role);
   }
 
+  /// <summary>
+  /// Retrieves all roles in the system.
+  /// </summary>
+  /// <returns>A list of all roles.</returns>
+  /// <remarks>Required permission: <c>role:read</c></remarks>
   [HttpGet]
   [Authorize("role:read")]
   public async Task<ActionResult<IEnumerable<RoleModel>>> GetAll()
@@ -65,6 +79,12 @@ public class RoleController : ControllerBase
     return Ok(roles);
   }
 
+  /// <summary>
+  /// Creates a new role in the system.
+  /// </summary>
+  /// <param name="createRoleRequest">The request containing details for the new role.</param>
+  /// <returns>The details of the newly created role.</returns>
+  /// <remarks>Required permission: <c>role:write</c></remarks>
   [HttpPost]
   [Authorize("role:write")]
   public async Task<ActionResult<RoleModel>> Create(CreateRoleRequest createRoleRequest)
@@ -91,6 +111,13 @@ public class RoleController : ControllerBase
     return CreatedAtAction(nameof(GetById), new { id = createdRole.Id }, createdRole);
   }
 
+  /// <summary>
+  /// Updates an existing role by its ID.
+  /// </summary>
+  /// <param name="id">The ID of the role to update.</param>
+  /// <param name="updateRoleRequest">The request containing updated role details.</param>
+  /// <returns>The updated role details, or an error if validation fails.</returns>
+  /// <remarks>Required permission: <c>role:write</c></remarks>
   [HttpPut("{id}")]
   [Authorize("role:write")]
   public async Task<ActionResult<RoleModel>> Update(int id, UpdateRoleRequest updateRoleRequest)
@@ -125,6 +152,12 @@ public class RoleController : ControllerBase
     return Ok(updatedRole);
   }
 
+  /// <summary>
+  /// Deletes a role by its ID.
+  /// </summary>
+  /// <param name="id">The unique ID of the role to delete.</param>
+  /// <returns>A 204 response if the role is successfully deleted.</returns>
+  /// <remarks>Required permission: <c>role:delete</c></remarks>
   [HttpDelete("{id}")]
   [Authorize("role:delete")]
   public async Task<ActionResult> DeleteRole(int id)
