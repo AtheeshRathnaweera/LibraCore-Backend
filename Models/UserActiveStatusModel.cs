@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace LibraCore.Backend.Models;
 
 public class UserActiveStatusModel
@@ -12,9 +14,10 @@ public class UserActiveStatusModel
 
   public DateTime? UpdatedAt { get; set; }
 
-  // Optional: Include related data if needed
+  [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
   public UserModel? User { get; set; }
 
+  [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
   public UserStatusModel? UserStatus { get; set; }
 
   public override string ToString()
