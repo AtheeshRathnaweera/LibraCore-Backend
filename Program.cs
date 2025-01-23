@@ -60,10 +60,8 @@ void RegisterServices(WebApplicationBuilder builder)
     options.ReportApiVersions = true;
     options.ApiVersionReader = new UrlSegmentApiVersionReader();
   });
-  builder.Services.AddSwaggerGen(options =>
-  {
-    options.SwaggerDoc("v1", new() { Title = "LibraCore API V1", Version = "v1" });
-  });
+
+  SwaggerConfiguration.AddSwaggerConfiguration(builder.Services);
 
   Auth0Configuration.AddAuth0Authentication(builder.Services, builder.Configuration);
   Auth0Configuration.AddAuth0Authorization(builder.Services, builder.Configuration);
