@@ -101,7 +101,8 @@ dotnet new gitignore
 - ☐ Pagination and Filtering
 - ☐ Logging and Monitoring
 - ☐ Unit Testing
-- ☐ API Documentation
+- ☑︎ API Documentation
+  - Uses `Swashbuckle` to generate Swagger UI for exploring and testing API endpoints with versioning and JWT authentication.
 - ☐ Database Migration
 - ☐ Resilience and Fault Tolerance
   - <span style="font-size:13px;">Implemented using `Polly` for strategies like retries, circuit breakers, and fallback policies.</span>
