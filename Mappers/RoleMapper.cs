@@ -35,7 +35,9 @@ public static class RoleMapper
     return new RoleModel
     {
       Id = CommonUtils.PropertyExists(dynamicDTO, "Id") ? dynamicDTO.Id : null,
-      Name = CommonUtils.PropertyExists(dynamicDTO, "Name") ? dynamicDTO.Name : null
+      Name = CommonUtils.PropertyExists(dynamicDTO, "Name") ? dynamicDTO.Name : null,
+      CreatedAt = CommonUtils.PropertyExists(dynamicDTO, "CreatedAt") ? dynamicDTO.CreatedAt : null,
+      UpdatedAt = CommonUtils.PropertyExists(dynamicDTO, "UpdatedAt") ? dynamicDTO.UpdatedAt : null
     };
   }
 
