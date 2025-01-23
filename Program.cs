@@ -8,6 +8,8 @@ using LibraCore.Backend.Services.Implementations;
 using LibraCore.Backend.Services.Interfaces;
 using LibraCore.Backend.Validators;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -51,6 +53,18 @@ void ConfigureDatabase(WebApplicationBuilder builder)
 // Method to register services
 void RegisterServices(WebApplicationBuilder builder)
 {
+  builder.Services.AddApiVersioning(options =>
+  {
+    options.DefaultApiVersion = new ApiVersion(1, 0); // Default version: 1.0
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ReportApiVersions = true;
+    options.ApiVersionReader = new UrlSegmentApiVersionReader();
+  });
+  builder.Services.AddSwaggerGen(options =>
+  {
+    options.SwaggerDoc("v1", new() { Title = "LibraCore API V1", Version = "v1" });
+  });
+
   Auth0Configuration.AddAuth0Authentication(builder.Services, builder.Configuration);
   Auth0Configuration.AddAuth0Authorization(builder.Services, builder.Configuration);
 
@@ -90,7 +104,10 @@ void ConfigurePipeline(WebApplication app)
   if (app.Environment.IsDevelopment())
   {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+      options.SwaggerEndpoint("/swagger/v1/swagger.json", "LibraCore API V1");
+    });
   }
 
   app.UseMiddleware<ExceptionHandlingMiddleware>();
