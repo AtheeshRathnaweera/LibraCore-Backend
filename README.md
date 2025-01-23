@@ -31,6 +31,11 @@ Once the environment variables are set, you can run the application.
    dotnet watch
    ```
 
+### 3. Access Swagger Documentation
+After running the application, you can access the Swagger documentation to explore and test the API endpoints.
+- Open your web browser and navigate to:
+  <a href="http://localhost:5114/swagger">http://localhost:5114/swagger</a>
+
 ## ⚙️ Useful Commands
 
 ### 💻 .NET
@@ -78,6 +83,8 @@ dotnet new gitignore
 ```
 
 ## ✅ Key Concepts Covered
+- ☑︎ Versioning
+  - <span style="font-size:13px;">Supports URL segment versioning (e.g., `api/v1.0/User`)</span>
 - ☑︎ ORM for MySQL
   - <span style="font-size:13px;">Using the `EntityFrameworkCore` to interact with the `MySQL` database.</span>
 - ☑︎ Basic CRUD operations
@@ -90,13 +97,12 @@ dotnet new gitignore
 - ☑︎ Input Validation
   - <span style="font-size:13px;">Validating request bodies with the `FluentValidation` library.</span>
 - ☑︎ API Response Customization and Optimization
-  - <span style="font-size:13px;">Using `query parameters` to customize and optimize API responses, such as controlling the inclusion of related data..</span>
+  - <span style="font-size:13px;">Using `query parameters` to customize and optimize API responses, such as controlling the inclusion of related data.</span>
 - ☐ Pagination and Filtering
 - ☐ Logging and Monitoring
 - ☐ Unit Testing
 - ☐ API Documentation
 - ☐ Database Migration
-- ☐ Versioning
 - ☐ Resilience and Fault Tolerance
   - <span style="font-size:13px;">Implemented using `Polly` for strategies like retries, circuit breakers, and fallback policies.</span>
 
