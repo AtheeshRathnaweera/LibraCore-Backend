@@ -94,18 +94,18 @@ public class UserActiveStatusController : ControllerBase
   [Authorize("user_active_status:write")]
   public async Task<ActionResult<RoleModel>> Update(int id, UpdateUserActiveStatusRequest updateUserActiveStatusRequest)
   {
+    if (id != updateUserActiveStatusRequest.Id)
+    {
+      _logger.LogWarning("'Id' in the request body does not match the 'Id' in the path: {BodyId} vs {PathId}", updateUserActiveStatusRequest.Id, id);
+      return BadRequest(new RequestValidationFailureResponse("Id", "The 'Id' in the request body must match the 'Id' in the path."));
+    }
+
     ValidationResult validationResult = await _updateUserActiveStatusRequestValidator.ValidateAsync(updateUserActiveStatusRequest);
 
     if (!validationResult.IsValid)
     {
       _logger.LogWarning("Invalid update request: {errors}", validationResult.Errors);
       return BadRequest(new RequestValidationFailureResponse(validationResult.ToDictionary()));
-    }
-
-    if (id != updateUserActiveStatusRequest.Id)
-    {
-      _logger.LogWarning("'Id' in the request body does not match the 'Id' in the path: {BodyId} vs {PathId}", updateUserActiveStatusRequest.Id, id);
-      return BadRequest(new RequestValidationFailureResponse("Id", "The 'Id' in the request body must match the 'Id' in the path."));
     }
 
     var userActiveStatusWithUpdates = new UserActiveStatusModel
