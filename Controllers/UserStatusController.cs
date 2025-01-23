@@ -4,17 +4,22 @@ using LibraCore.Backend.DTOs;
 using LibraCore.Backend.DTOs.UserStatus;
 using LibraCore.Backend.Models;
 using LibraCore.Backend.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraCore.Backend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class UserStatusController : ControllerBase
 {
   private readonly ILogger<UserStatusController> _logger;
+
   private readonly IValidator<CreateUserStatusRequest> _createUserStatusRequestValidator;
+
   private readonly IValidator<UpdateUserStatusRequest> _updateUserStatusRequestValidator;
+
   private readonly IUserStatusService _userStatusService;
 
   public UserStatusController(ILogger<UserStatusController> logger, IValidator<CreateUserStatusRequest> createUserStatusRequestValidator, IValidator<UpdateUserStatusRequest> updateUserStatusRequestValidator, IUserStatusService userStatusService)
@@ -26,6 +31,7 @@ public class UserStatusController : ControllerBase
   }
 
   [HttpGet("{id}")]
+  [Authorize("user_status:read")]
   public async Task<ActionResult<UserStatusModel>> GetById(int id)
   {
     if (id <= 0)
@@ -44,6 +50,7 @@ public class UserStatusController : ControllerBase
   }
 
   [HttpGet]
+  [Authorize("user_status:read")]
   public async Task<ActionResult<IEnumerable<UserStatusModel>>> GetAllAsync()
   {
     var userStatuses = await _userStatusService.GetAllAsync();
@@ -58,6 +65,7 @@ public class UserStatusController : ControllerBase
   }
 
   [HttpPost]
+  [Authorize("user_status:write")]
   public async Task<ActionResult<UserStatusModel>> Create(CreateUserStatusRequest createUserStatusRequest)
   {
     ValidationResult validationResult = await _createUserStatusRequestValidator.ValidateAsync(createUserStatusRequest);
@@ -68,15 +76,19 @@ public class UserStatusController : ControllerBase
       return BadRequest(new RequestValidationFailureResponse(validationResult.ToDictionary()));
     }
 
-    var newUserStatus = new UserStatusModel(name: createUserStatusRequest.Name!);
+    var newUserStatus = new UserStatusModel
+    {
+      Name = createUserStatusRequest.Name
+    };
     var createdUserStatus = await _userStatusService.CreateAsync(newUserStatus);
 
-    _logger.LogInformation("User Status created successfully with Name: {Name}", createdUserStatus.Name);
+    _logger.LogInformation("User status created successfully with Name: {Name}", createdUserStatus.Name);
 
     return CreatedAtAction(nameof(GetById), new { id = createdUserStatus.Id }, createdUserStatus);
   }
 
   [HttpPut("{id}")]
+  [Authorize("user_status:write")]
   public async Task<ActionResult<UserStatusModel>> Update(int id, UpdateUserStatusRequest updateUserStatusRequest)
   {
     ValidationResult validationResult = await _updateUserStatusRequestValidator.ValidateAsync(updateUserStatusRequest);
@@ -93,27 +105,32 @@ public class UserStatusController : ControllerBase
       return BadRequest(new RequestValidationFailureResponse("Id", "The 'Id' in the request body must match the 'Id' in the path."));
     }
 
-    var userStatusWithUpdates = new UserStatusModel(id, updateUserStatusRequest.Name!);
+    var userStatusWithUpdates = new UserStatusModel
+    {
+      Id = id,
+      Name = updateUserStatusRequest.Name
+    };
     var updatedUserStatus = await _userStatusService.UpdateAsync(id, userStatusWithUpdates);
 
     if (updatedUserStatus == null)
     {
-      _logger.LogWarning("User Status not found for update: {UserStatusId}", id);
-      return NotFound(new MessageResponse($"User Status with ID {id} not found."));
+      _logger.LogWarning("User status not found for update: {UserStatusId}", id);
+      return NotFound(new MessageResponse($"User status with ID {id} not found."));
     }
 
     return Ok(updatedUserStatus);
   }
 
   [HttpDelete("{id}")]
+  [Authorize("user_status:delete")]
   public async Task<ActionResult> Delete(int id)
   {
     var result = await _userStatusService.DeleteAsync(id);
 
     if (!result)
     {
-      _logger.LogWarning("User Status with id {Id} not found.", id);
-      return NotFound(new MessageResponse($"User Status with id {id} not found."));
+      _logger.LogWarning("User status with id {Id} not found.", id);
+      return NotFound(new MessageResponse($"User status with id {id} not found."));
     }
 
     return NoContent();
