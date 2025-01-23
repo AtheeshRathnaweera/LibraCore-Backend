@@ -89,6 +89,8 @@ dotnet new gitignore
   - <span style="font-size:13px;">Authentication is implemented using `Auth0` as the `OAuth2` client. `Scope-based authorization` is enforced via endpoint-specific `decorators`. For more details, refer to the documentation: <a href="https://auth0.com/docs/quickstart/backend/aspnet-core-webapi/interactive?download=true">Auth0 Quickstart for ASP.NET Core Web API</a>.</span>
 - ☑︎ Input Validation
   - <span style="font-size:13px;">Validating request bodies with the `FluentValidation` library.</span>
+- ☑︎ API Response Customization and Optimization
+  - <span style="font-size:13px;">Using `query parameters` to customize and optimize API responses, such as controlling the inclusion of related data..</span>
 - ☐ Pagination and Filtering
 - ☐ Logging and Monitoring
 - ☐ Unit Testing

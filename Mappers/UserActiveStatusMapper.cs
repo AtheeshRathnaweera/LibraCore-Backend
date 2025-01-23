@@ -14,7 +14,9 @@ public static class UserActiveStatusMapper
       UserId = userActiveStatusEntity.UserId,
       UserStatusId = userActiveStatusEntity.UserStatusId,
       CreatedAt = userActiveStatusEntity.CreatedAt,
-      UpdatedAt = userActiveStatusEntity.UpdatedAt
+      UpdatedAt = userActiveStatusEntity.UpdatedAt,
+      User = userActiveStatusEntity.User != null ? UserMapper.EntityToModel(userActiveStatusEntity.User) : null,
+      UserStatus = userActiveStatusEntity.UserStatus != null ? UserStatusMapper.EntityToModel(userActiveStatusEntity.UserStatus) : null,
     };
   }
 

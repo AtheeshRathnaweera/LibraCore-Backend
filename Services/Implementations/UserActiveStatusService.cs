@@ -16,15 +16,23 @@ public class UserActiveStatusService : IUserActiveStatusService
     _dbContext = mainDBContext ?? throw new ArgumentNullException(nameof(mainDBContext));
   }
 
-  public async Task<UserActiveStatusModel?> GetAsync(int id)
+  public async Task<UserActiveStatusModel?> GetAsync(int id, string? expand)
   {
-    var userActiveStatus = await _dbContext.UserActiveStatus.FindAsync(id);
+    var query = _dbContext.UserActiveStatus.AsQueryable();
+
+    query = ApplyExpandQueryParams(query, expand);
+
+    var userActiveStatus = await query.FirstOrDefaultAsync(uas => uas.Id == id);
     return userActiveStatus != null ? UserActiveStatusMapper.EntityToModel(userActiveStatus) : null;
   }
 
-  public async Task<IEnumerable<UserActiveStatusModel>> GetAllAsync()
+  public async Task<IEnumerable<UserActiveStatusModel>> GetAllAsync(string? expand)
   {
-    var userActiveStatuses = await _dbContext.UserActiveStatus.ToListAsync();
+    var query = _dbContext.UserActiveStatus.AsQueryable();
+
+    query = ApplyExpandQueryParams(query, expand);
+
+    var userActiveStatuses = await query.ToListAsync();
     return userActiveStatuses.Select(UserActiveStatusMapper.EntityToModel);
   }
 
@@ -60,5 +68,17 @@ public class UserActiveStatusService : IUserActiveStatusService
     await _dbContext.SaveChangesAsync();
 
     return true;
+  }
+
+  private static IQueryable<UserActiveStatusEntity> ApplyExpandQueryParams(IQueryable<UserActiveStatusEntity> query, string? expand)
+  {
+    if (!string.IsNullOrEmpty(expand))
+    {
+      var expandProperties = expand.Split(',');
+
+      if (expandProperties.Contains("user")) query = query.Include(uas => uas.User);
+      if (expandProperties.Contains("userStatus")) query = query.Include(uas => uas.UserStatus);
+    }
+    return query;
   }
 }

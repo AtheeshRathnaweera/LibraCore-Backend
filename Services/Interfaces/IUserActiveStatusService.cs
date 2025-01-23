@@ -4,9 +4,9 @@ namespace LibraCore.Backend.Services.Interfaces;
 
 public interface IUserActiveStatusService
 {
-  Task<UserActiveStatusModel?> GetAsync(int id);
+  Task<UserActiveStatusModel?> GetAsync(int id, string? expand);
 
-  Task<IEnumerable<UserActiveStatusModel>> GetAllAsync();
+  Task<IEnumerable<UserActiveStatusModel>> GetAllAsync(string? expand);
 
   Task<UserActiveStatusModel> CreateAsync(UserActiveStatusModel userActiveStatusModel);
 

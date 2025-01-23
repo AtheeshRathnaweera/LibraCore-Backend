@@ -33,7 +33,7 @@ public class UserActiveStatusController : ControllerBase
 
   [HttpGet("{id}")]
   [Authorize("user_active_status:read")]
-  public async Task<ActionResult<UserActiveStatusModel>> GetById(int id)
+  public async Task<ActionResult<UserActiveStatusModel>> GetById(int id, [FromQuery] string? expand = null)
   {
     if (id <= 0)
     {
@@ -41,7 +41,7 @@ public class UserActiveStatusController : ControllerBase
       return BadRequest("Invalid ID provided.");
     }
 
-    var userActiveStatus = await _userActiveStatusService.GetAsync(id);
+    var userActiveStatus = await _userActiveStatusService.GetAsync(id, expand);
     if (userActiveStatus == null)
     {
       _logger.LogInformation("No user active status found.");
@@ -52,9 +52,9 @@ public class UserActiveStatusController : ControllerBase
 
   [HttpGet]
   [Authorize("user_active_status:read")]
-  public async Task<ActionResult<IEnumerable<UserActiveStatusModel>>> GetAll()
+  public async Task<ActionResult<IEnumerable<UserActiveStatusModel>>> GetAll([FromQuery] string? expand = null)
   {
-    var userActiveStatuses = await _userActiveStatusService.GetAllAsync();
+    var userActiveStatuses = await _userActiveStatusService.GetAllAsync(expand);
 
     if (!userActiveStatuses.Any())
     {
