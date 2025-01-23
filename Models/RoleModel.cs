@@ -10,12 +10,8 @@ public class RoleModel
 
   public DateTime? UpdatedAt { get; set; }
 
-  public RoleModel()
+  public override string ToString()
   {
-  }
-
-  public RoleModel(string name)
-  {
-    Name = name;
+    return $"RoleMode: Id={Id}, Name={Name}, CreatedAt={CreatedAt}, UpdatedAt={UpdatedAt}";
   }
 }

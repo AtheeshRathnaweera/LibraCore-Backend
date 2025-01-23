@@ -17,18 +17,8 @@ public class UserActiveStatusModel
 
   public UserStatusModel? UserStatus { get; set; }
 
-  public UserActiveStatusModel()
-  {
-  }
-
-  public UserActiveStatusModel(int userId, int userStatusId)
-  {
-    UserId = userId;
-    UserStatusId = userStatusId;
-  }
-
   public override string ToString()
   {
-    return $"Id: {Id}, UserId: {UserId}, UserStatusId: {UserStatusId}, CreatedAt: {CreatedAt}, UpdatedAt: {UpdatedAt}";
+    return $"UserActiveStatusModel: Id={Id}, UserId={UserId}, UserStatusId={UserStatusId}, CreatedAt={CreatedAt}, UpdatedAt={UpdatedAt}";
   }
 }

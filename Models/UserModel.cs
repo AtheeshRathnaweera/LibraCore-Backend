@@ -28,27 +28,6 @@ public class UserModel
 
   public DateTime? UpdatedAt { get; set; }
 
-  public UserModel()
-  {
-  }
-
-  public UserModel(
-    string? firstName, string? lastName, string? addressOne, string? addressTwo,
-    string? city, string? district, string? email, string? phoneNumber, string? nic,
-    DateTime dateOfBirth)
-  {
-    FirstName = firstName;
-    LastName = lastName;
-    AddressOne = addressOne;
-    AddressTwo = addressTwo;
-    City = city;
-    District = district;
-    Email = email;
-    PhoneNumber = phoneNumber;
-    NIC = nic;
-    DateOfBirth = dateOfBirth;
-  }
-
   public override string ToString()
   {
     return $"UserModel: Id={Id}, FirstName={FirstName}, LastName={LastName}, AddressOne={AddressOne}, AddressTwo={AddressTwo}, City={City}, District={District}, Email={Email}, PhoneNumber={PhoneNumber}, NIC={NIC}, DateOfBirth={DateOfBirth}, CreatedAt={CreatedAt}, UpdatedAt={UpdatedAt}";

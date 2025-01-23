@@ -10,18 +10,8 @@ public class UserStatusModel
 
   public DateTime? UpdatedAt { get; set; }
 
-  public UserStatusModel()
+  public override string ToString()
   {
-  }
-
-  public UserStatusModel(string name)
-  {
-    Name = name;
-  }
-
-  public UserStatusModel(int id, string name)
-  {
-    Id = id;
-    Name = name;
+    return $"UserStatusModel: Id={Id}, Name={Name}, CreatedAt={CreatedAt}, UpdatedAt={UpdatedAt}";
   }
 }
