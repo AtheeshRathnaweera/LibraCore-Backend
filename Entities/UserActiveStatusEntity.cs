@@ -4,6 +4,11 @@ using LibraCore.Backend.Entities.Base;
 
 namespace LibraCore.Backend.Entities;
 
+// Note: Property validations such as required fields, non-null constraints, and other rules
+// are defined in the corresponding request validator for this entity.
+// You can find these validations in the following file:
+// Validators/UserActiveStatusRequestValidators.cs
+
 [Table("user_active_status")]
 public class UserActiveStatusEntity : BaseEntity
 {
