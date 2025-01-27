@@ -15,6 +15,8 @@ public class MainDBContext : DbContext
 
   public required DbSet<UserActiveStatusEntity> UserActiveStatus { get; set; }
 
+  public required DbSet<AuthorEntity> Author { get; set; }
+
   public MainDBContext(DbContextOptions<MainDBContext> context) : base(context)
   {
   }
