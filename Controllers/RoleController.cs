@@ -160,7 +160,7 @@ public class RoleController : ControllerBase
   /// <remarks>Required permission: <c>role:delete</c></remarks>
   [HttpDelete("{id}")]
   [Authorize("role:delete")]
-  public async Task<ActionResult> DeleteRole(int id)
+  public async Task<ActionResult> Delete(int id)
   {
     var result = await _roleService.DeleteAsync(id);
 

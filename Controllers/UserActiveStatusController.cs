@@ -162,7 +162,7 @@ public class UserActiveStatusController : ControllerBase
   /// <remarks>Required permission: <c>user_active_status:delete</c></remarks>
   [HttpDelete("{id}")]
   [Authorize("user_active_status:delete")]
-  public async Task<ActionResult> DeleteRole(int id)
+  public async Task<ActionResult> Delete(int id)
   {
     var result = await _userActiveStatusService.DeleteAsync(id);
 

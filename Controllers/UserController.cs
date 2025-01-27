@@ -177,7 +177,7 @@ public class UserController : ControllerBase
   /// <remarks>Required permission: <c>user:delete</c></remarks>
   [HttpDelete("{id}")]
   [Authorize("user:delete")]
-  public async Task<ActionResult> DeleteRole(int id)
+  public async Task<ActionResult> Delete(int id)
   {
     var result = await _userService.DeleteAsync(id);
 
