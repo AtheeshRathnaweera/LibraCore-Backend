@@ -4,6 +4,7 @@ using LibraCore.Backend.DTOs;
 using LibraCore.Backend.DTOs.Role;
 using LibraCore.Backend.Models;
 using LibraCore.Backend.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraCore.Backend.Controllers;
@@ -14,6 +15,7 @@ namespace LibraCore.Backend.Controllers;
 [ApiController]
 [Route("api/v{version:apiVersion}/[controller]")]
 [ApiVersion("1.0")]
+[Authorize]
 public class AuthorController : ControllerBase
 {
   private readonly ILogger<AuthorController> _logger;
@@ -39,7 +41,7 @@ public class AuthorController : ControllerBase
   /// <returns>The author details if found.</returns>
   /// <remarks>Required permission: <c>author:read</c></remarks>
   [HttpGet("{id}")]
-  // [Authorize("author:read")]
+  [Authorize("author:read")]
   public async Task<ActionResult<AuthorModel>> GetById(int id)
   {
     if (id <= 0)
@@ -63,7 +65,7 @@ public class AuthorController : ControllerBase
   /// <returns>A list of all authors.</returns>
   /// <remarks>Required permission: <c>author:read</c></remarks>
   [HttpGet]
-  // [Authorize("role:read")]
+  [Authorize("author:read")]
   public async Task<ActionResult<IEnumerable<AuthorModel>>> GetAll()
   {
     var authors = await _authorService.GetAllAsync();
@@ -84,7 +86,7 @@ public class AuthorController : ControllerBase
   /// <returns>The newly created author.</returns>
   /// <remarks>Required permission: <c>author:write</c></remarks>
   [HttpPost]
-  // [Authorize("role:write")]
+  [Authorize("author:write")]
   public async Task<ActionResult<AuthorModel>> Create(CreateAuthorRequest createAuthorRequest)
   {
     ValidationResult validationResult = await _createAuthorRequestValidator.ValidateAsync(createAuthorRequest);
@@ -119,7 +121,7 @@ public class AuthorController : ControllerBase
   /// <returns>The updated author details.</returns>
   /// <remarks>Required permission: <c>author:write</c></remarks>
   [HttpPut("{id}")]
-  // [Authorize("role:write")]
+  [Authorize("author:write")]
   public async Task<ActionResult<AuthorModel>> Update(int id, UpdateAuthorRequest updateAuthorRequest)
   {
     ValidationResult validationResult = await _updateAuthorRequestValidator.ValidateAsync(updateAuthorRequest);
@@ -164,7 +166,7 @@ public class AuthorController : ControllerBase
   /// <returns>No content if deletion is successful.</returns>
   /// <remarks>Required permission: <c>author:delete</c></remarks>
   [HttpDelete("{id}")]
-  // [Authorize("user:delete")]
+  [Authorize("author:delete")]
   public async Task<ActionResult> Delete(int id)
   {
     var result = await _authorService.DeleteAsync(id);
