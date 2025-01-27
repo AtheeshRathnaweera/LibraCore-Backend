@@ -74,6 +74,7 @@ void RegisterServices(WebApplicationBuilder builder)
   builder.Services.AddScoped<IUserStatusService, UserStatusService>();
   builder.Services.AddScoped<IUserService, UserService>();
   builder.Services.AddScoped<IUserActiveStatusService, UserActiveStatusService>();
+  builder.Services.AddScoped<IAuthorService, AuthorService>();
 
   // Configure global JsonSerializerOptions in the DI container
   var globalJsonOptions = new JsonSerializerOptions
