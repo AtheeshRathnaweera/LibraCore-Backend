@@ -40,10 +40,10 @@ public static class AuthorMapper
   public static void UpdateEntityFromModel(AuthorEntity existingAuthor, AuthorModel authorModel)
   {
     if (!string.IsNullOrWhiteSpace(authorModel.FirstName)) existingAuthor.FirstName = authorModel.FirstName;
-    if (!string.IsNullOrWhiteSpace(authorModel.LastName)) existingAuthor.LastName = authorModel.LastName;
-    if (authorModel.DateOfBirth != default) existingAuthor.DateOfBirth = authorModel.DateOfBirth;
-    if (authorModel.DateOfDeath != default) existingAuthor.DateOfDeath = authorModel.DateOfDeath;
-    if (!string.IsNullOrWhiteSpace(authorModel.Nationality)) existingAuthor.Nationality = authorModel.Nationality;
-    if (!string.IsNullOrWhiteSpace(authorModel.ImageUrl)) existingAuthor.ImageUrl = authorModel.ImageUrl;
+    existingAuthor.LastName = authorModel.LastName;
+    existingAuthor.DateOfBirth = authorModel.DateOfBirth;
+    existingAuthor.DateOfDeath = authorModel.DateOfDeath;
+    existingAuthor.Nationality = authorModel.Nationality;
+    existingAuthor.ImageUrl = authorModel.ImageUrl;
   }
 }
