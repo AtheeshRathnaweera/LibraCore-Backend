@@ -9,10 +9,10 @@ public class AuthorEntity : BaseEntity
   public int Id { get; set; }
 
   [Column("first_name")]
-  public required string FirstName { get; set; }
+  public string? FirstName { get; set; }
 
   [Column("last_name")]
-  public required string LastName { get; set; }
+  public string? LastName { get; set; }
 
   [Column("date_of_birth")]
   public DateTime DateOfBirth { get; set; }
@@ -20,7 +20,8 @@ public class AuthorEntity : BaseEntity
   [Column("date_of_death")]
   public DateTime DateOfDeath { get; set; }
 
-  public required string Nationality { get; set; }
+  public string? Nationality { get; set; }
 
-  public string ImageUrl { get; set; }
+  [Column("image_url")]
+  public string? ImageUrl { get; set; }
 }
