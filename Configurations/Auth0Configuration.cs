@@ -49,7 +49,7 @@ public static class Auth0Configuration
     foreach (var policy in policies)
     {
       authorizationBuilder.AddPolicy(policy.Key, policyBuilder =>
-          policyBuilder.Requirements.Add(new HasScopeRequirement(policy.Value, auth0Domain))
+          policyBuilder.Requirements.Add(new HasPolicyRequirement(policy.Value, auth0Domain))
       );
     }
   }
