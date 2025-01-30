@@ -66,7 +66,7 @@ void RegisterServices(WebApplicationBuilder builder)
   Auth0Configuration.AddAuth0Authentication(builder.Services, builder.Configuration);
   Auth0Configuration.AddAuth0Authorization(builder.Services, builder.Configuration);
 
-  builder.Services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
+  builder.Services.AddSingleton<IAuthorizationHandler, HasPermissionHandler>();
   builder.Services.AddScoped<
     IAuthorizationMiddlewareResultHandler, AuthorizationErrorHandlingMiddleware>();
 
