@@ -21,9 +21,6 @@ public class HasPermissionHandler : AuthorizationHandler<HasPolicyRequirement>
       c.Type == "permissions" &&
       string.Equals(new Uri(c.Issuer).Host, requirement.Issuer, StringComparison.OrdinalIgnoreCase));
 
-    _logger.LogInformation("Permissions: {permissionClaim}", permissionClaim);
-
-
     if (permissionClaim == null)
     {
       var message = $"Authorization failed: Permissions claim is missing or issuer does not match the expected issuer '{requirement.Issuer}'.";
