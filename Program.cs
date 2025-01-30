@@ -33,6 +33,9 @@ app.Run();
 void ConfigureDatabase(WebApplicationBuilder builder)
 {
   // Retrieve environment variables from the configuration
+  var dbHost = builder.Configuration["DB_HOST"];
+  var dbPort = builder.Configuration["DB_PORT"];
+  var dbName = builder.Configuration["DB_NAME"];
   var mysqlDbUser = builder.Configuration["MYSQL_LOCAL_USER"];
   var mysqlDbPassword = builder.Configuration["MYSQL_LOCAL_PASSWORD"];
 
@@ -42,7 +45,7 @@ void ConfigureDatabase(WebApplicationBuilder builder)
     throw new InvalidOperationException("Database credentials are not properly configured in environment variables.");
   }
 
-  var connectionString = $"server=localhost;port=3306;user={mysqlDbUser};password={mysqlDbPassword};database=libra_core";
+  var connectionString = $"server=localhost;port=3306;user={mysqlDbUser};password={mysqlDbPassword};database={dbName}";
 
   builder.Services.AddDbContext<MainDBContext>(options =>
   {
