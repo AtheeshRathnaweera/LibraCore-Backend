@@ -19,8 +19,22 @@ Before running the application, make sure to set the environment variables for s
    source Deployment/set_env_vars.sh
    ```
 
-### 2. Run the Application
-Once the environment variables are set, you can run the application.
+### 2. Import Database Dump
+
+Before running the application, you need to import the provided database dump.
+
+#### Steps:
+
+1. Ensure you have MySQL installed and running on your machine.
+2. Navigate to the `Database` folder where the dump file is located.
+3. Run the following command to import the database dump:
+   ```bash
+   mysql -u [username] -p [database_name] < Database/dump.sql
+   ```
+   Replace `[username]` with your MySQL username and `[database_name]` with the name of the database you want to create or use.
+
+### 3. Run the Application
+Once the environment variables are set and the database is imported, you can run the application.
 
 - To run the application with HTTPS:
    ```bash
@@ -31,7 +45,7 @@ Once the environment variables are set, you can run the application.
    dotnet watch
    ```
 
-### 3. Access Swagger Documentation
+### 4. Access Swagger Documentation
 After running the application, you can access the Swagger documentation to explore and test the API endpoints.
 - Open your web browser and navigate to:
   <a href="http://localhost:5114/swagger">http://localhost:5114/swagger</a>
